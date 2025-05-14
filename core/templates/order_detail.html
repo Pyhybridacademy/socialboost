@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block title %}Order #{{ order.id }} - SocialBoost{% endblock %}
+
+{% block content %}
+<!-- Order Detail Header -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="fw-bold mb-3">Order #{{ order.id }}</h1>
+                <p class="lead">View details and status of your order</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Order Details -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card mb-4">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Order Information</h5>
+                        <span class="badge 
+                            {% if order.status == 'pending' %}bg-warning
+                            {% elif order.status == 'processing' %}bg-info
+                            {% elif order.status == 'completed' %}bg-success
+                            {% elif order.status == 'canceled' %}bg-secondary
+                            {% elif order.status == 'error' %}bg-danger
+                            {% else %}bg-secondary{% endif %}">
+                            {{ order.status|title }}
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h6 class="text-muted">Order Details</h6>
+                                <p><strong>Order ID:</strong> #{{ order.id }}</p>
+                                <p><strong>Date:</strong> {{ order.created_at|date:"F d, Y H:i" }}</p>
+                                <p><strong>Service:</strong> {{ order.service.name }}</p>
+                                <p><strong>Category:</strong> {{ order.service.category }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-muted">Order Specifics</h6>
+                                <p><strong>Quantity:</strong> {{ order.quantity }}</p>
+                                <p><strong>Price:</strong> ₦{{ order.charge|floatformat:2 }}</p>
+                                <p><strong>Provider Order ID:</strong> {% if order.order_id %}{{ order.order_id }}{% else %}<span class="text-muted">Not available</span>{% endif %}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h6 class="text-muted">Link/URL</h6>
+                            <div class="input-group">
+                                <input type="text" class="form-control" value="{{ order.link }}" readonly>
+                                <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('{{ order.link }}')">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        {% if order.comments %}
+                            <div class="mb-4">
+                                <h6 class="text-muted">Additional Comments</h6>
+                                <p>{{ order.comments }}</p>
+                            </div>
+                        {% endif %}
+                        
+                        {% if order.status == 'processing' %}
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i> Your order is being processed. This may take some time depending on the service.
+                            </div>
+                        {% elif order.status == 'completed' %}
+                            <div class="alert alert-success">
+                                <i class="fas fa-check-circle me-2"></i> Your order has been completed successfully!
+                            </div>
+                        {% elif order.status == 'error' %}
+                            <div class="alert alert-danger">
+                                <i class="fas fa-exclamation-circle me-2"></i> There was an error processing your order. Please contact support.
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'order_status' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-arrow-left me-2"></i> Back to Orders
+                    </a>
+                    {% if order.status == 'completed' %}
+                        <a href="{% url 'service_detail' order.service.id %}" class="btn btn-primary">
+                            Order Again <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(function() {
+            alert('Link copied to clipboard!');
+        }, function(err) {
+            console.error('Could not copy text: ', err);
+        });
+    }
+</script>
+{% endblock %}

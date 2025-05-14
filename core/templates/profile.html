@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile - SocialBoost{% endblock %}
+
+{% block content %}
+<!-- Profile Header -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="fw-bold mb-3">My Profile</h1>
+                <p class="lead">Manage your account information</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Profile Content -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <!-- Account Information -->
+                <div class="card mb-4">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Account Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="{% url 'profile' %}">
+                            {% csrf_token %}
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="first_name" class="form-label">First Name</label>
+                                    <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user.first_name }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="last_name" class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" id="last_name" name="last_name" value="{{ user.last_name }}">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" value="{{ user.username }}" disabled>
+                                <div class="form-text">Username cannot be changed</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" name="update_profile" class="btn btn-primary">Update Profile</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Change Password -->
+                <div class="card mb-4">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Change Password</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="{% url 'profile' %}">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="current_password" class="form-label">Current Password</label>
+                                <input type="password" class="form-control" id="current_password" name="current_password" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="new_password" class="form-label">New Password</label>
+                                <input type="password" class="form-control" id="new_password" name="new_password" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirm_password" class="form-label">Confirm New Password</label>
+                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" name="change_password" class="btn btn-primary">Change Password</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Account Balance -->
+                <div class="card mb-4">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Account Balance</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center py-3">
+                            <h2 class="display-4 text-primary mb-3">₦{{ user_balance.balance|floatformat:2 }}</h2>
+                            <p class="text-muted">Current account balance</p>
+                            <a href="{% url 'add_funds' %}" class="btn btn-primary mt-2">Add Funds</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Account Statistics -->
+                <div class="card">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Account Statistics</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-4">
+                            <div class="col-md-4">
+                                <div class="text-center">
+                                    <h3 class="text-primary">{{ total_orders }}</h3>
+                                    <p class="text-muted mb-0">Total Orders</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-center">
+                                    <h3 class="text-success">{{ completed_orders }}</h3>
+                                    <p class="text-muted mb-0">Completed Orders</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-center">
+                                    <h3 class="text-info">₦{{ total_spent|floatformat:2 }}</h3>
+                                    <p class="text-muted mb-0">Total Spent</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-4">
+                            <a href="{% url 'order_status' %}" class="btn btn-outline-primary">View Order History</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

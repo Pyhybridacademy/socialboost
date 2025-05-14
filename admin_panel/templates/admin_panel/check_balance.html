@@ -1,0 +1,97 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block title %}API Balance - SocialBoost Admin{% endblock %}
+
+{% block content %}
+<div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-3xl mx-auto">
+    <!-- Page header -->
+    <div class="mb-8" data-aos="fade-down">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+            <div class="mb-4 sm:mb-0">
+                <h1 class="text-2xl md:text-3xl font-bold text-slate-800">API Provider Balance</h1>
+                <p class="text-slate-500 mt-2">Current balance with your service provider</p>
+            </div>
+            <a href="{% url 'admin_panel:dashboard' %}" class="btn bg-slate-100 hover:bg-slate-200 text-slate-600">
+                <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
+            </a>
+        </div>
+    </div>
+
+    <!-- Balance Card -->
+    <div class="card-hover bg-white rounded-xl shadow-sm border border-slate-200 mb-8" data-aos="fade-up">
+        <div class="p-5 border-b border-slate-200">
+            <h3 class="text-lg font-semibold text-slate-800">Current Balance</h3>
+        </div>
+        <div class="p-5 text-center">
+            <div class="text-5xl font-bold text-indigo-600 mb-2">₦{{ api_balance|floatformat:2 }}</div>
+            <p class="text-slate-500 mb-6">Funds available with your API provider</p>
+            
+            <div class="bg-indigo-50 rounded-lg p-4 max-w-2xl mx-auto mb-6">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 mt-0.5">
+                        <i class="fas fa-info-circle text-indigo-500"></i>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-slate-600">This balance is used to fulfill orders placed by users. Make sure to maintain sufficient funds.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <!-- Pending Orders -->
+                <div class="card-hover bg-white rounded-lg shadow-sm border border-slate-200 p-4">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center text-amber-500 mr-3">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div>
+                            <div class="text-sm text-slate-500">Pending Orders</div>
+                            <div class="text-xl font-bold text-slate-800">{{ pending_orders_count }}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Estimated Cost -->
+                <div class="card-hover bg-white rounded-lg shadow-sm border border-slate-200 p-4">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full bg-rose-50 flex items-center justify-center text-rose-500 mr-3">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div>
+                            <div class="text-sm text-slate-500">Estimated Cost</div>
+                            <div class="text-xl font-bold text-slate-800">₦{{ pending_orders_cost|floatformat:2 }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-3">
+                <a href="https://therealowlet.com/dashboard" target="_blank" class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+                    <i class="fas fa-external-link-alt mr-2"></i> API Provider Dashboard
+                </a>
+                <a href="{% url 'admin_panel:record_provider_payment' %}" class="btn bg-emerald-500 hover:bg-emerald-600 text-white">
+                    <i class="fas fa-plus mr-2"></i> Record Payment
+                </a>
+            </div>
+        </div>
+        <div class="p-4 border-t border-slate-200 bg-slate-50 rounded-b-xl">
+            <div class="flex flex-col sm:flex-row justify-between items-center">
+                <span class="text-sm text-slate-500 mb-2 sm:mb-0">Last checked: {% now "F d, Y H:i" %}</span>
+                <a href="{% url 'admin_panel:check_balance' %}" class="btn btn-sm bg-white border-slate-200 hover:border-slate-300 text-indigo-500">
+                    <i class="fas fa-sync mr-1"></i> Refresh
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Animation for balance display */
+    .text-5xl {
+        transition: transform 0.3s ease;
+    }
+    .text-5xl:hover {
+        transform: scale(1.02);
+    }
+</style>
+{% endblock %}

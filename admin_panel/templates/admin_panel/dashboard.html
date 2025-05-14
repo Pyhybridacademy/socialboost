@@ -1,0 +1,240 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block title %}Dashboard - SocialBoost Admin{% endblock %}
+
+{% block content %}
+<div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+    <!-- Page header -->
+    <div class="mb-8" data-aos="fade-down">
+        <h1 class="text-2xl md:text-3xl font-bold text-slate-800">Dashboard Overview</h1>
+        <p class="text-slate-500 mt-2">Welcome back! Here's what's happening with your business today.</p>
+    </div>
+    
+    <!-- Stats cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Total Revenue -->
+        <div class="card-hover bg-white rounded-xl shadow-sm border border-slate-200 p-5" data-aos="fade-up" data-aos-delay="100">
+            <div class="flex items-center">
+                <div class="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-500 mr-4">
+                    <i class="fas fa-money-bill-wave text-xl"></i>
+                </div>
+                <div>
+                    <div class="text-sm font-medium text-slate-500 mb-1">Total Revenue</div>
+                    <div class="text-2xl font-bold text-slate-800">₦{{ total_retail_value|floatformat:2 }}</div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800">+2.5% from last week</span>
+            </div>
+        </div>
+        
+        <!-- Profit -->
+        <div class="card-hover bg-white rounded-xl shadow-sm border border-slate-200 p-5" data-aos="fade-up" data-aos-delay="150">
+            <div class="flex items-center">
+                <div class="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-500 mr-4">
+                    <i class="fas fa-chart-line text-xl"></i>
+                </div>
+                <div>
+                    <div class="text-sm font-medium text-slate-500 mb-1">Profit</div>
+                    <div class="text-2xl font-bold text-slate-800">₦{{ profit|floatformat:2 }}</div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">+12.3% from last week</span>
+            </div>
+        </div>
+        
+        <!-- Total Orders -->
+        <div class="card-hover bg-white rounded-xl shadow-sm border border-slate-200 p-5" data-aos="fade-up" data-aos-delay="200">
+            <div class="flex items-center">
+                <div class="w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center text-amber-500 mr-4">
+                    <i class="fas fa-shopping-cart text-xl"></i>
+                </div>
+                <div>
+                    <div class="text-sm font-medium text-slate-500 mb-1">Total Orders</div>
+                    <div class="text-2xl font-bold text-slate-800">{{ order_stats.total }}</div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">+5 new today</span>
+            </div>
+        </div>
+        
+        <!-- Admin Balance -->
+        <div class="card-hover bg-white rounded-xl shadow-sm border border-slate-200 p-5" data-aos="fade-up" data-aos-delay="250">
+            <div class="flex items-center">
+                <div class="w-12 h-12 rounded-full bg-purple-50 flex items-center justify-center text-purple-500 mr-4">
+                    <i class="fas fa-wallet text-xl"></i>
+                </div>
+                <div>
+                    <div class="text-sm font-medium text-slate-500 mb-1">Admin Balance</div>
+                    <div class="text-2xl font-bold text-slate-800">₦{{ admin_balance|floatformat:2 }}</div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <a href="{% url 'admin_panel:check_balance' %}" class="text-xs font-medium text-purple-600 hover:text-purple-800">View API Balance</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Order statistics -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <!-- Order status breakdown -->
+        <div class="card-hover bg-white rounded-xl shadow-sm border border-slate-200 p-5" data-aos="fade-up">
+            <h2 class="text-lg font-semibold text-slate-800 mb-4">Order Status Breakdown</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="text-center p-3 bg-slate-50 rounded-lg">
+                    <div class="text-3xl font-bold text-slate-800">{{ order_stats.total }}</div>
+                    <div class="text-xs font-medium text-slate-500 mt-1">Total</div>
+                </div>
+                <div class="text-center p-3 bg-amber-50 rounded-lg">
+                    <div class="text-3xl font-bold text-amber-600">{{ order_stats.pending }}</div>
+                    <div class="text-xs font-medium text-amber-600 mt-1">Pending</div>
+                </div>
+                <div class="text-center p-3 bg-blue-50 rounded-lg">
+                    <div class="text-3xl font-bold text-blue-600">{{ order_stats.processing }}</div>
+                    <div class="text-xs font-medium text-blue-600 mt-1">Processing</div>
+                </div>
+                <div class="text-center p-3 bg-emerald-50 rounded-lg">
+                    <div class="text-3xl font-bold text-emerald-600">{{ order_stats.completed }}</div>
+                    <div class="text-xs font-medium text-emerald-600 mt-1">Completed</div>
+                </div>
+                <div class="text-center p-3 bg-rose-50 rounded-lg">
+                    <div class="text-3xl font-bold text-rose-600">{{ order_stats.canceled }}</div>
+                    <div class="text-xs font-medium text-rose-600 mt-1">Canceled</div>
+                </div>
+                <div class="text-center p-3 bg-slate-50 rounded-lg">
+                    <div class="text-3xl font-bold text-slate-600">{{ order_stats.error }}</div>
+                    <div class="text-xs font-medium text-slate-600 mt-1">Error</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Provider payment info -->
+        <div class="card-hover bg-white rounded-xl shadow-sm border border-slate-200 p-5 lg:col-span-2" data-aos="fade-up" data-aos-delay="100">
+            <h2 class="text-lg font-semibold text-slate-800 mb-4">Provider Payment Information</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div class="p-4 bg-slate-50 rounded-lg">
+                    <div class="text-lg font-semibold text-slate-800">₦{{ total_wholesale_cost|floatformat:2 }}</div>
+                    <div class="text-xs font-medium text-slate-500">Total Wholesale Cost</div>
+                </div>
+                <div class="p-4 bg-emerald-50 rounded-lg">
+                    <div class="text-lg font-semibold text-emerald-600">₦{{ provider_payments|floatformat:2 }}</div>
+                    <div class="text-xs font-medium text-emerald-600">Paid to Provider</div>
+                </div>
+                <div class="p-4 bg-rose-50 rounded-lg">
+                    <div class="text-lg font-semibold text-rose-600">₦{{ amount_owed_to_provider|floatformat:2 }}</div>
+                    <div class="text-xs font-medium text-rose-600">Owed to Provider</div>
+                </div>
+            </div>
+            <div class="text-center">
+                <a href="{% url 'admin_panel:record_provider_payment' %}" class="inline-flex items-center px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg transition-colors">
+                    <i class="fas fa-credit-card mr-2"></i>
+                    <span>Record Payment to Provider</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent activity -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Recent Orders -->
+        <div class="card-hover bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden" data-aos="fade-up">
+            <div class="px-5 py-4 border-b border-slate-200">
+                <h2 class="text-lg font-semibold text-slate-800">Recent Orders</h2>
+            </div>
+            <div class="p-5">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                <th class="px-3 py-2 text-left">ID</th>
+                                <th class="px-3 py-2 text-left">Service</th>
+                                <th class="px-3 py-2 text-left">Amount</th>
+                                <th class="px-3 py-2 text-left">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200">
+                            {% for order in recent_orders %}
+                            <tr class="transition-colors hover:bg-slate-50">
+                                <td class="px-3 py-3 whitespace-nowrap">
+                                    <a href="{% url 'admin_panel:order_detail' order.id %}" class="text-sm font-medium text-indigo-500 hover:text-indigo-700">#{{ order.id }}</a>
+                                </td>
+                                <td class="px-3 py-3 whitespace-nowrap">
+                                    <div class="text-sm text-slate-800">{{ order.service.name|truncatechars:20 }}</div>
+                                    <div class="text-xs text-slate-500">{{ order.user.username }}</div>
+                                </td>
+                                <td class="px-3 py-3 whitespace-nowrap text-sm font-medium text-slate-800">₦{{ order.charge|floatformat:2 }}</td>
+                                <td class="px-3 py-3 whitespace-nowrap">
+                                    <span class="badge {% if order.status == 'completed' %}badge-success{% elif order.status == 'processing' %}badge-info{% elif order.status == 'pending' %}badge-warning{% elif order.status == 'canceled' %}badge-secondary{% else %}badge-danger{% endif %}">
+                                        {{ order.status|title }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="px-3 py-4 text-center text-sm text-slate-500">No orders found</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-4 text-right">
+                    <a href="{% url 'admin_panel:orders' %}" class="text-sm font-medium text-indigo-500 hover:text-indigo-700 inline-flex items-center">
+                        <span>View All Orders</span>
+                        <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Transactions -->
+        <div class="card-hover bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+            <div class="px-5 py-4 border-b border-slate-200">
+                <h2 class="text-lg font-semibold text-slate-800">Recent Transactions</h2>
+            </div>
+            <div class="p-5">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                <th class="px-3 py-2 text-left">ID</th>
+                                <th class="px-3 py-2 text-left">User</th>
+                                <th class="px-3 py-2 text-left">Amount</th>
+                                <th class="px-3 py-2 text-left">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200">
+                            {% for transaction in recent_transactions %}
+                            <tr class="transition-colors hover:bg-slate-50">
+                                <td class="px-3 py-3 whitespace-nowrap text-sm font-medium text-slate-800">#{{ transaction.id }}</td>
+                                <td class="px-3 py-3 whitespace-nowrap text-sm text-slate-800">{{ transaction.user.username }}</td>
+                                <td class="px-3 py-3 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-slate-800">₦{{ transaction.amount|floatformat:2 }}</div>
+                                    <div class="text-xs text-slate-500">
+                                        <span class="badge {% if transaction.transaction_type == 'deposit' %}badge-success{% elif transaction.transaction_type == 'order' %}badge-info{% elif transaction.transaction_type == 'refund' %}badge-warning{% else %}badge-secondary{% endif %}">
+                                            {{ transaction.transaction_type|title }}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="px-3 py-3 whitespace-nowrap text-sm text-slate-500">{{ transaction.created_at|date:"M d, Y" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="px-3 py-4 text-center text-sm text-slate-500">No transactions found</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-4 text-right">
+                    <a href="{% url 'admin_panel:transactions' %}" class="text-sm font-medium text-indigo-500 hover:text-indigo-700 inline-flex items-center">
+                        <span>View All Transactions</span>
+                        <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

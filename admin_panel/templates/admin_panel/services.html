@@ -1,0 +1,460 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block title %}Services Management - SocialBoost Admin{% endblock %}
+
+{% block content %}
+<div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+    <!-- Page header -->
+    <div class="mb-8" data-aos="fade-down">
+        <div class="flex flex-col md:flex-row md:justify-between md:items-center">
+            <h1 class="text-2xl md:text-3xl font-bold text-slate-800">Services Management</h1>
+            <div class="mt-4 md:mt-0 flex space-x-2">
+                <button type="button" class="inline-flex items-center px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-lg transition-colors" data-bs-toggle="modal" data-bs-target="#syncServicesModal">
+                    <i class="fas fa-sync mr-2"></i> 
+                    <span>Sync Services</span>
+                </button>
+                <button type="button" class="inline-flex items-center px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg transition-colors" data-bs-toggle="modal" data-bs-target="#exportModal">
+                    <i class="fas fa-file-export mr-2"></i> 
+                    <span>Export Services</span>
+                </button>
+            </div>
+        </div>
+        <p class="text-slate-500 mt-2">Manage all available services and their configurations</p>
+    </div>
+    
+    <!-- Search and Filter -->
+    <div class="card-hover bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-8" data-aos="fade-up">
+        <form method="get">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label for="search" class="block text-sm font-medium text-slate-600 mb-1">Search</label>
+                    <input type="text" id="search" name="search" value="{{ search_query }}" 
+                           class="w-full px-3 py-2 border border-slate-300 rounded-lg input-focus" 
+                           placeholder="Service name, description...">
+                </div>
+                <div>
+                    <label for="category" class="block text-sm font-medium text-slate-600 mb-1">Category</label>
+                    <select id="category" name="category" class="w-full px-3 py-2 border border-slate-300 rounded-lg input-focus">
+                        <option value="">All Categories</option>
+                        {% for cat in categories %}
+                            <option value="{{ cat }}" {% if selected_category == cat %}selected{% endif %}>{{ cat }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label for="status" class="block text-sm font-medium text-slate-600 mb-1">Status</label>
+                    <select id="status" name="status" class="w-full px-3 py-2 border border-slate-300 rounded-lg input-focus">
+                        <option value="all" {% if status == 'all' %}selected{% endif %}>All Services</option>
+                        <option value="active" {% if status == 'active' %}selected{% endif %}>Active</option>
+                        <option value="inactive" {% if status == 'inactive' %}selected{% endif %}>Inactive</option>
+                    </select>
+                </div>
+                <div class="flex items-end">
+                    <button type="submit" class="w-full inline-flex items-center justify-center px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg transition-colors">
+                        <i class="fas fa-search mr-2"></i>
+                        <span>Filter</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Services Table -->
+    <div class="card-hover bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden" data-aos="fade-up">
+        <div class="px-5 py-4 border-b border-slate-200">
+            <h2 class="text-lg font-semibold text-slate-800">Services ({{ services.paginator.count }})</h2>
+        </div>
+        <div class="p-5">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                            <th class="px-3 py-2 text-left">ID</th>
+                            <th class="px-3 py-2 text-left">Service ID</th>
+                            <th class="px-3 py-2 text-left">Name</th>
+                            <th class="px-3 py-2 text-left">Category</th>
+                            <th class="px-3 py-2 text-left">Rate (₦)</th>
+                            <th class="px-3 py-2 text-left">Min</th>
+                            <th class="px-3 py-2 text-left">Max</th>
+                            <th class="px-3 py-2 text-left">Status</th>
+                            <th class="px-3 py-2 text-left">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                        {% for service in services %}
+                        <tr class="transition-colors hover:bg-slate-50">
+                            <td class="px-3 py-3 whitespace-nowrap text-sm text-slate-800">{{ service.id }}</td>
+                            <td class="px-3 py-3 whitespace-nowrap text-sm font-medium text-slate-800">{{ service.service_id }}</td>
+                            <td class="px-3 py-3 whitespace-nowrap text-sm text-slate-800">{{ service.name|truncatechars:30 }}</td>
+                            <td class="px-3 py-3 whitespace-nowrap text-sm text-slate-800">{{ service.category }}</td>
+                            <td class="px-3 py-3 whitespace-nowrap text-sm font-medium text-slate-800">{{ service.rate|floatformat:2 }}</td>
+                            <td class="px-3 py-3 whitespace-nowrap text-sm text-slate-800">{{ service.min_quantity }}</td>
+                            <td class="px-3 py-3 whitespace-nowrap text-sm text-slate-800">{{ service.max_quantity }}</td>
+                            <td class="px-3 py-3 whitespace-nowrap">
+                                {% if service.is_active %}
+                                    <span class="badge badge-success">Active</span>
+                                {% else %}
+                                    <span class="badge badge-secondary">Inactive</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-3 py-3 whitespace-nowrap">
+                                <div class="flex space-x-2">
+                                    <button type="button" class="p-2 rounded-lg bg-indigo-100 text-indigo-600 hover:bg-indigo-200 transition-colors"
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#editServiceModal" 
+                                            data-service-id="{{ service.id }}"
+                                            data-service-provider-id="{{ service.service_id }}"
+                                            data-name="{{ service.name }}"
+                                            data-category="{{ service.category }}"
+                                            data-rate="{{ service.rate }}"
+                                            data-min-quantity="{{ service.min_quantity }}"
+                                            data-max-quantity="{{ service.max_quantity }}"
+                                            data-description="{{ service.description }}"
+                                            data-is-active="{{ service.is_active|yesno:'true,false' }}">
+                                        <i class="fas fa-edit text-sm"></i>
+                                    </button>
+                                    <a href="" class="p-2 rounded-lg bg-sky-100 text-sky-600 hover:bg-sky-200 transition-colors">
+                                        <i class="fas fa-eye text-sm"></i>
+                                    </a>
+                                    <button type="button" class="p-2 rounded-lg {% if service.is_active %}bg-amber-100 text-amber-600 hover:bg-amber-200{% else %}bg-emerald-100 text-emerald-600 hover:bg-emerald-200{% endif %} transition-colors"
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#toggleServiceModal" 
+                                            data-service-id="{{ service.id }}"
+                                            data-service-name="{{ service.name }}"
+                                            data-is-active="{{ service.is_active|yesno:'true,false' }}">
+                                        <i class="fas {% if service.is_active %}fa-times{% else %}fa-check{% endif %} text-sm"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="9" class="px-3 py-4 text-center text-sm text-slate-500">No services found</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            {% if services.has_other_pages %}
+            <div class="mt-6 flex items-center justify-between">
+                <div class="text-sm text-slate-500">
+                    Showing {{ services.start_index }} to {{ services.end_index }} of {{ services.paginator.count }} entries
+                </div>
+                <div class="flex space-x-2">
+                    {% if services.has_previous %}
+                        <a href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if status %}&status={{ status }}{% endif %}" 
+                           class="px-3 py-1 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-100 transition-colors">
+                            <i class="fas fa-angle-double-left"></i>
+                        </a>
+                        <a href="?page={{ services.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if status %}&status={{ status }}{% endif %}" 
+                           class="px-3 py-1 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-100 transition-colors">
+                            <i class="fas fa-angle-left"></i>
+                        </a>
+                    {% else %}
+                        <span class="px-3 py-1 rounded-lg border border-slate-300 text-slate-400 cursor-not-allowed">
+                            <i class="fas fa-angle-double-left"></i>
+                        </span>
+                        <span class="px-3 py-1 rounded-lg border border-slate-300 text-slate-400 cursor-not-allowed">
+                            <i class="fas fa-angle-left"></i>
+                        </span>
+                    {% endif %}
+                    
+                    {% for num in services.paginator.page_range %}
+                        {% if services.number == num %}
+                            <span class="px-3 py-1 rounded-lg bg-indigo-500 text-white">{{ num }}</span>
+                        {% elif num > services.number|add:'-3' and num < services.number|add:'3' %}
+                            <a href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if status %}&status={{ status }}{% endif %}" 
+                               class="px-3 py-1 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-100 transition-colors">
+                                {{ num }}
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if services.has_next %}
+                        <a href="?page={{ services.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if status %}&status={{ status }}{% endif %}" 
+                           class="px-3 py-1 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-100 transition-colors">
+                            <i class="fas fa-angle-right"></i>
+                        </a>
+                        <a href="?page={{ services.paginator.num_pages }}{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if status %}&status={{ status }}{% endif %}" 
+                           class="px-3 py-1 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-100 transition-colors">
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                    {% else %}
+                        <span class="px-3 py-1 rounded-lg border border-slate-300 text-slate-400 cursor-not-allowed">
+                            <i class="fas fa-angle-right"></i>
+                        </span>
+                        <span class="px-3 py-1 rounded-lg border border-slate-300 text-slate-400 cursor-not-allowed">
+                            <i class="fas fa-angle-double-right"></i>
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Edit Service Modal -->
+<div class="modal fade" id="editServiceModal" tabindex="-1" aria-labelledby="editServiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header border-b border-slate-200 p-5">
+                <h5 class="text-xl font-semibold text-slate-800" id="editServiceModalLabel">Edit Service</h5>
+                <button type="button" class="text-slate-400 hover:text-slate-500" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form method="post" action="">
+                {% csrf_token %}
+                <div class="modal-body p-5">
+                    <input type="hidden" name="service_id" id="editServiceId">
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label for="editServiceProviderId" class="block text-sm font-medium text-slate-600 mb-2">Service Provider ID</label>
+                            <input type="text" id="editServiceProviderId" name="service_provider_id" 
+                                   class="w-full px-3 py-2 border border-slate-300 rounded-lg input-focus" readonly>
+                        </div>
+                        <div>
+                            <label for="editName" class="block text-sm font-medium text-slate-600 mb-2">Name</label>
+                            <input type="text" id="editName" name="name" required
+                                   class="w-full px-3 py-2 border border-slate-300 rounded-lg input-focus">
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label for="editCategory" class="block text-sm font-medium text-slate-600 mb-2">Category</label>
+                            <input type="text" id="editCategory" name="category" required
+                                   class="w-full px-3 py-2 border border-slate-300 rounded-lg input-focus">
+                        </div>
+                        <div>
+                            <label for="editRate" class="block text-sm font-medium text-slate-600 mb-2">Rate (₦)</label>
+                            <input type="number" id="editRate" name="rate" step="0.01" min="0" required
+                                   class="w-full px-3 py-2 border border-slate-300 rounded-lg input-focus">
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label for="editMinQuantity" class="block text-sm font-medium text-slate-600 mb-2">Min Quantity</label>
+                            <input type="number" id="editMinQuantity" name="min_quantity" min="1" required
+                                   class="w-full px-3 py-2 border border-slate-300 rounded-lg input-focus">
+                        </div>
+                        <div>
+                            <label for="editMaxQuantity" class="block text-sm font-medium text-slate-600 mb-2">Max Quantity</label>
+                            <input type="number" id="editMaxQuantity" name="max_quantity" min="1" required
+                                   class="w-full px-3 py-2 border border-slate-300 rounded-lg input-focus">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="editDescription" class="block text-sm font-medium text-slate-600 mb-2">Description</label>
+                        <textarea id="editDescription" name="description" rows="3"
+                                  class="w-full px-3 py-2 border border-slate-300 rounded-lg input-focus"></textarea>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <input type="checkbox" id="editIsActive" name="is_active"
+                               class="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500">
+                        <label for="editIsActive" class="ml-2 text-sm text-slate-600">Active</label>
+                    </div>
+                </div>
+                <div class="modal-footer border-t border-slate-200 p-5">
+                    <button type="button" class="px-4 py-2 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-100 transition-colors" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg transition-colors">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Toggle Service Modal -->
+<div class="modal fade" id="toggleServiceModal" tabindex="-1" aria-labelledby="toggleServiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-b border-slate-200 p-5">
+                <h5 class="text-xl font-semibold text-slate-800" id="toggleServiceModalLabel">Toggle Service Status</h5>
+                <button type="button" class="text-slate-400 hover:text-slate-500" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form method="post" action="">
+                {% csrf_token %}
+                <div class="modal-body p-5">
+                    <input type="hidden" name="service_id" id="toggleServiceId">
+                    <input type="hidden" name="is_active" id="toggleIsActive">
+                    
+                    <p id="toggleServiceMessage" class="text-slate-800 mb-4"></p>
+                    
+                    <div class="p-4 rounded-lg bg-amber-50 text-amber-800 border border-amber-200">
+                        <div class="flex items-start">
+                            <i class="fas fa-exclamation-triangle mt-0.5 mr-2"></i>
+                            <span id="toggleServiceWarning"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-t border-slate-200 p-5">
+                    <button type="button" class="px-4 py-2 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-100 transition-colors" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="px-4 py-2 text-white rounded-lg transition-colors" id="toggleServiceButton"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Sync Services Modal -->
+<div class="modal fade" id="syncServicesModal" tabindex="-1" aria-labelledby="syncServicesModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-b border-slate-200 p-5">
+                <h5 class="text-xl font-semibold text-slate-800" id="syncServicesModalLabel">Sync Services</h5>
+                <button type="button" class="text-slate-400 hover:text-slate-500" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form method="post" action="{% url 'admin_panel:sync_services_manual' %}">
+                {% csrf_token %}
+                <div class="modal-body p-5">
+                    <p class="text-slate-800 mb-4">This will synchronize all services with the API provider.</p>
+                    
+                    <div class="p-4 rounded-lg bg-sky-50 text-sky-800 border border-sky-200 mb-6">
+                        <div class="flex items-start">
+                            <i class="fas fa-info-circle mt-0.5 mr-2"></i>
+                            <span>This process may take a few minutes. New services will be added, existing services will be updated, and services no longer available from the provider will be deactivated.</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <input type="checkbox" id="updatePrices" name="update_prices" checked
+                               class="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500">
+                        <label for="updatePrices" class="ml-2 text-sm text-slate-600">Update prices based on current markup</label>
+                    </div>
+                </div>
+                <div class="modal-footer border-t border-slate-200 p-5">
+                    <button type="button" class="px-4 py-2 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-100 transition-colors" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-lg transition-colors">
+                        <i class="fas fa-sync mr-2"></i> Sync Now
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Export Modal -->
+<div class="modal fade" id="exportModal" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-b border-slate-200 p-5">
+                <h5 class="text-xl font-semibold text-slate-800" id="exportModalLabel">Export Services</h5>
+                <button type="button" class="text-slate-400 hover:text-slate-500" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form method="get" action="{% url 'admin_panel:export_services' %}">
+                <div class="modal-body p-5">
+                    <div class="mb-6">
+                        <label for="exportFormat" class="block text-sm font-medium text-slate-600 mb-2">Format</label>
+                        <select id="exportFormat" name="format" class="w-full px-3 py-2 border border-slate-300 rounded-lg input-focus">
+                            <option value="csv">CSV</option>
+                            <option value="excel">Excel</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="exportCategory" class="block text-sm font-medium text-slate-600 mb-2">Category</label>
+                        <select id="exportCategory" name="category" class="w-full px-3 py-2 border border-slate-300 rounded-lg input-focus">
+                            <option value="">All Categories</option>
+                            {% for cat in categories %}
+                                <option value="{{ cat }}">{{ cat }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="exportStatus" class="block text-sm font-medium text-slate-600 mb-2">Status</label>
+                        <select id="exportStatus" name="status" class="w-full px-3 py-2 border border-slate-300 rounded-lg input-focus">
+                            <option value="all">All Services</option>
+                            <option value="active">Active Only</option>
+                            <option value="inactive">Inactive Only</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer border-t border-slate-200 p-5">
+                    <button type="button" class="px-4 py-2 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-100 transition-colors" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg transition-colors">Export</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle edit service modal
+        const editServiceModal = document.getElementById('editServiceModal');
+        if (editServiceModal) {
+            editServiceModal.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+                
+                // Extract service data from button attributes
+                const serviceId = button.getAttribute('data-service-id');
+                const serviceProviderId = button.getAttribute('data-service-provider-id');
+                const name = button.getAttribute('data-name');
+                const category = button.getAttribute('data-category');
+                const rate = button.getAttribute('data-rate');
+                const minQuantity = button.getAttribute('data-min-quantity');
+                const maxQuantity = button.getAttribute('data-max-quantity');
+                const description = button.getAttribute('data-description');
+                const isActive = button.getAttribute('data-is-active') === 'true';
+                
+                // Set values in the form
+                document.getElementById('editServiceId').value = serviceId;
+                document.getElementById('editServiceProviderId').value = serviceProviderId;
+                document.getElementById('editName').value = name;
+                document.getElementById('editCategory').value = category;
+                document.getElementById('editRate').value = rate;
+                document.getElementById('editMinQuantity').value = minQuantity;
+                document.getElementById('editMaxQuantity').value = maxQuantity;
+                document.getElementById('editDescription').value = description;
+                document.getElementById('editIsActive').checked = isActive;
+            });
+        }
+        
+        // Handle toggle service modal
+        const toggleServiceModal = document.getElementById('toggleServiceModal');
+        if (toggleServiceModal) {
+            toggleServiceModal.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+                
+                // Extract service data from button attributes
+                const serviceId = button.getAttribute('data-service-id');
+                const serviceName = button.getAttribute('data-service-name');
+                const isActive = button.getAttribute('data-is-active') === 'true';
+                
+                // Set values in the form
+                document.getElementById('toggleServiceId').value = serviceId;
+                document.getElementById('toggleIsActive').value = !isActive;
+                
+                // Update modal content based on current status
+                if (isActive) {
+                    document.getElementById('toggleServiceMessage').textContent = `Are you sure you want to deactivate the service "${serviceName}"?`;
+                    document.getElementById('toggleServiceWarning').textContent = 'Deactivating this service will hide it from users. Existing orders will not be affected.';
+                    document.getElementById('toggleServiceButton').textContent = 'Deactivate';
+                    document.getElementById('toggleServiceButton').className = 'px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg transition-colors';
+                } else {
+                    document.getElementById('toggleServiceMessage').textContent = `Are you sure you want to activate the service "${serviceName}"?`;
+                    document.getElementById('toggleServiceWarning').textContent = 'Activating this service will make it visible to users and available for ordering.';
+                    document.getElementById('toggleServiceButton').textContent = 'Activate';
+                    document.getElementById('toggleServiceButton').className = 'px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors';
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}
+{% endblock %}

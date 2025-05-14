@@ -1,0 +1,106 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block title %}Record Payment to API Provider - SocialBoost{% endblock %}
+
+{% block content %}
+<div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-3xl mx-auto">
+    <!-- Page header -->
+    <div class="mb-8" data-aos="fade-down">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+            <div class="mb-4 sm:mb-0">
+                <h1 class="text-2xl md:text-3xl font-bold text-slate-800">Record Provider Payment</h1>
+                <p class="text-slate-500 mt-2">Track payments made to your API service provider</p>
+            </div>
+            <a href="{% url 'admin_panel:dashboard' %}" class="btn bg-slate-100 hover:bg-slate-200 text-slate-600">
+                <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
+            </a>
+        </div>
+    </div>
+    
+    <!-- Payment Form Card -->
+    <div class="card-hover bg-white rounded-xl shadow-sm border border-slate-200" data-aos="fade-up">
+        <div class="p-5 border-b border-slate-200">
+            <h3 class="text-lg font-semibold text-slate-800">Payment Details</h3>
+        </div>
+        <div class="p-5">
+            <form method="post">
+                {% csrf_token %}
+                
+                <!-- Amount Field -->
+                <div class="mb-5">
+                    <label for="amount" class="block text-sm font-medium text-slate-500 mb-1">Amount Paid (₦)</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <span class="text-slate-500">₦</span>
+                        </div>
+                        <input type="number" 
+                               class="form-input w-full pl-8 input-focus" 
+                               id="amount" 
+                               name="amount" 
+                               min="1" 
+                               step="0.01" 
+                               placeholder="0.00"
+                               required>
+                    </div>
+                </div>
+                
+                <!-- Payment Method -->
+                <div class="mb-5">
+                    <label for="payment_method" class="block text-sm font-medium text-slate-500 mb-1">Payment Method</label>
+                    <select class="form-select w-full input-focus" 
+                            id="payment_method" 
+                            name="payment_method" 
+                            required>
+                        <option value="">Select payment method</option>
+                        <option value="bank_transfer">Bank Transfer</option>
+                        <option value="paystack">Paystack</option>
+                        <option value="bitcoin">Bitcoin</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <!-- Reference Field -->
+                <div class="mb-5">
+                    <label for="reference" class="block text-sm font-medium text-slate-500 mb-1">Reference/Transaction ID</label>
+                    <input type="text" 
+                           class="form-input w-full input-focus" 
+                           id="reference" 
+                           name="reference" 
+                           placeholder="e.g. TXN123456789">
+                    <p class="text-xs text-slate-400 mt-1">Transaction reference or payment ID (optional)</p>
+                </div>
+                
+                <!-- Notes Field -->
+                <div class="mb-6">
+                    <label for="notes" class="block text-sm font-medium text-slate-500 mb-1">Notes</label>
+                    <textarea class="form-textarea w-full input-focus" 
+                              id="notes" 
+                              name="notes" 
+                              rows="3" 
+                              placeholder="Any additional notes about this payment"></textarea>
+                </div>
+                
+                <!-- Submit Button -->
+                <div class="pt-2">
+                    <button type="submit" 
+                            class="btn w-full bg-indigo-500 hover:bg-indigo-600 text-white">
+                        <i class="fas fa-save mr-2"></i> Record Payment
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Custom styling for form inputs */
+    .form-input, .form-select, .form-textarea {
+        @apply border-slate-200 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-lg shadow-sm;
+    }
+    
+    /* Animation for form elements */
+    [data-aos="fade-up"] {
+        transition-property: transform, opacity;
+    }
+</style>
+{% endblock %}

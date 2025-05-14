@@ -1,0 +1,441 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block title %}User Details - SocialBoost Admin{% endblock %}
+
+{% block content %}
+<div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+    <!-- Page header -->
+    <div class="mb-8" data-aos="fade-down">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+            <div class="mb-4 sm:mb-0">
+                <h1 class="text-2xl md:text-3xl font-bold text-slate-800">User Details</h1>
+                <p class="text-slate-500 mt-2">View and manage user account information</p>
+            </div>
+            <div class="flex space-x-2">
+                <a href="{% url 'admin_panel:users' %}" class="btn bg-slate-100 hover:bg-slate-200 text-slate-600">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Users
+                </a>
+                <button type="button" class="btn bg-indigo-500 hover:bg-indigo-600 text-white" data-bs-toggle="modal" data-bs-target="#adjustBalanceModal">
+                    <i class="fas fa-coins mr-2"></i> Adjust Balance
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- User Profile -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <!-- User Card -->
+        <div class="card-hover bg-white rounded-xl shadow-sm border border-slate-200" data-aos="fade-up">
+            <div class="p-5">
+                <div class="text-center">
+                    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 mb-4">
+                        <i class="fas fa-user-circle text-4xl text-white"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800">{{ user.username }}</h3>
+                    <p class="text-slate-500 mb-4">{{ user.email }}</p>
+                    
+                    <div class="flex justify-center space-x-2 mb-4">
+                        {% if user.is_staff %}
+                            <span class="badge badge-primary">Staff</span>
+                        {% endif %}
+                        {% if user.is_active %}
+                            <span class="badge badge-success">Active</span>
+                        {% else %}
+                            <span class="badge badge-secondary">Inactive</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <button type="button" class="btn w-full bg-white border-slate-200 hover:border-slate-300 text-slate-600" data-bs-toggle="modal" data-bs-target="#editUserModal">
+                            <i class="fas fa-edit mr-2"></i> Edit Profile
+                        </button>
+                        {% if user.is_active %}
+                        <button type="button" class="btn w-full bg-white border-slate-200 hover:border-slate-300 text-rose-500" data-bs-toggle="modal" data-bs-target="#deactivateUserModal">
+                            <i class="fas fa-user-slash mr-2"></i> Deactivate
+                        </button>
+                        {% else %}
+                        <form method="post" action="{% url 'admin_user_activate' user.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn w-full bg-white border-slate-200 hover:border-slate-300 text-emerald-500">
+                                <i class="fas fa-user-check mr-2"></i> Activate
+                            </button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- User Information -->
+        <div class="card-hover bg-white rounded-xl shadow-sm border border-slate-200 lg:col-span-2" data-aos="fade-up" data-aos-delay="100">
+            <div class="p-5">
+                <h3 class="text-lg font-semibold text-slate-800 mb-4">Account Information</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-slate-500 mb-1">Full Name</label>
+                        <p class="text-sm font-medium text-slate-800">{{ user.get_full_name|default:"Not provided" }}</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm text-slate-500 mb-1">Date Joined</label>
+                        <p class="text-sm font-medium text-slate-800">{{ user.date_joined|date:"F d, Y" }}</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm text-slate-500 mb-1">Last Login</label>
+                        <p class="text-sm font-medium text-slate-800">{{ user.last_login|date:"F d, Y H:i"|default:"Never" }}</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm text-slate-500 mb-1">Account Balance</label>
+                        <p class="text-sm font-medium text-slate-800">₦{{ user_balance.balance|floatformat:2 }}</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm text-slate-500 mb-1">Total Orders</label>
+                        <p class="text-sm font-medium text-slate-800">{{ total_orders }}</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm text-slate-500 mb-1">Total Spent</label>
+                        <p class="text-sm font-medium text-slate-800">₦{{ total_spent|floatformat:2 }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- User Statistics -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Completed Orders -->
+        <div class="card-hover bg-white rounded-xl shadow-sm border border-slate-200" data-aos="fade-up">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-500 mr-4">
+                        <i class="fas fa-check-circle text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="text-sm text-slate-500">Completed Orders</div>
+                        <div class="text-xl font-bold text-slate-800">{{ completed_orders }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pending Orders -->
+        <div class="card-hover bg-white rounded-xl shadow-sm border border-slate-200" data-aos="fade-up" data-aos-delay="100">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center text-amber-500 mr-4">
+                        <i class="fas fa-clock text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="text-sm text-slate-500">Pending Orders</div>
+                        <div class="text-xl font-bold text-slate-800">{{ pending_orders }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Total Deposits -->
+        <div class="card-hover bg-white rounded-xl shadow-sm border border-slate-200" data-aos="fade-up" data-aos-delay="150">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-500 mr-4">
+                        <i class="fas fa-money-bill-wave text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="text-sm text-slate-500">Total Deposits</div>
+                        <div class="text-xl font-bold text-slate-800">₦{{ total_deposits|floatformat:2 }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Last Activity -->
+        <div class="card-hover bg-white rounded-xl shadow-sm border border-slate-200" data-aos="fade-up" data-aos-delay="200">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-sky-50 flex items-center justify-center text-sky-500 mr-4">
+                        <i class="fas fa-calendar-alt text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="text-sm text-slate-500">Last Activity</div>
+                        <div class="text-xl font-bold text-slate-800">{{ last_activity|date:"M d"|default:"Never" }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Orders -->
+    <div class="card-hover bg-white rounded-xl shadow-sm border border-slate-200 mb-8" data-aos="fade-up">
+        <div class="p-5 border-b border-slate-200">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                <h3 class="text-lg font-semibold text-slate-800">Recent Orders</h3>
+                <a href="{% url 'admin_panel:user_orders' user.id %}" class="btn btn-sm bg-white border-slate-200 hover:border-slate-300 text-indigo-500 mt-2 sm:mt-0">
+                    View All Orders <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                </a>
+            </div>
+        </div>
+        <div class="p-5">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                            <th class="px-3 py-2 text-left">ID</th>
+                            <th class="px-3 py-2 text-left">Service</th>
+                            <th class="px-3 py-2 text-left">Quantity</th>
+                            <th class="px-3 py-2 text-left">Date</th>
+                            <th class="px-3 py-2 text-left">Status</th>
+                            <th class="px-3 py-2 text-left">Amount</th>
+                            <th class="px-3 py-2 text-left">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                        {% for order in recent_orders %}
+                        <tr class="transition-colors hover:bg-slate-50">
+                            <td class="px-3 py-3 whitespace-nowrap text-sm font-medium text-slate-800">#{{ order.id }}</td>
+                            <td class="px-3 py-3 whitespace-nowrap text-sm text-slate-800">{{ order.service.name|truncatechars:30 }}</td>
+                            <td class="px-3 py-3 whitespace-nowrap text-sm text-slate-800">{{ order.quantity }}</td>
+                            <td class="px-3 py-3 whitespace-nowrap text-sm text-slate-500">{{ order.created_at|date:"M d, Y H:i" }}</td>
+                            <td class="px-3 py-3 whitespace-nowrap">
+                                {% if order.status == 'pending' %}
+                                    <span class="badge badge-warning">Pending</span>
+                                {% elif order.status == 'processing' %}
+                                    <span class="badge badge-info">Processing</span>
+                                {% elif order.status == 'completed' %}
+                                    <span class="badge badge-success">Completed</span>
+                                {% elif order.status == 'canceled' %}
+                                    <span class="badge badge-secondary">Canceled</span>
+                                {% elif order.status == 'error' %}
+                                    <span class="badge badge-danger">Error</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-3 py-3 whitespace-nowrap text-sm font-medium text-slate-800">₦{{ order.charge|floatformat:2 }}</td>
+                            <td class="px-3 py-3 whitespace-nowrap">
+                                <a href="{% url 'admin_panel:order_detail' order.id %}" class="btn btn-sm bg-white border-slate-200 hover:border-slate-300 text-slate-600">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="px-3 py-4 text-center text-sm text-slate-500">No orders found</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Transactions -->
+    <div class="card-hover bg-white rounded-xl shadow-sm border border-slate-200" data-aos="fade-up" data-aos-delay="100">
+        <div class="p-5 border-b border-slate-200">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                <h3 class="text-lg font-semibold text-slate-800">Recent Transactions</h3>
+                <a href="{% url 'admin_panel:user_transactions' user.id %}" class="btn btn-sm bg-white border-slate-200 hover:border-slate-300 text-indigo-500 mt-2 sm:mt-0">
+                    View All Transactions <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                </a>
+            </div>
+        </div>
+        <div class="p-5">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                            <th class="px-3 py-2 text-left">ID</th>
+                            <th class="px-3 py-2 text-left">Type</th>
+                            <th class="px-3 py-2 text-left">Amount</th>
+                            <th class="px-3 py-2 text-left">Date</th>
+                            <th class="px-3 py-2 text-left">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                        {% for transaction in recent_transactions %}
+                        <tr class="transition-colors hover:bg-slate-50">
+                            <td class="px-3 py-3 whitespace-nowrap text-sm font-medium text-slate-800">#{{ transaction.id }}</td>
+                            <td class="px-3 py-3 whitespace-nowrap">
+                                {% if transaction.transaction_type == 'deposit' %}
+                                    <span class="badge badge-success">Deposit</span>
+                                {% elif transaction.transaction_type == 'order' %}
+                                    <span class="badge badge-primary">Order</span>
+                                {% elif transaction.transaction_type == 'refund' %}
+                                    <span class="badge badge-warning">Refund</span>
+                                {% elif transaction.transaction_type == 'withdrawal' %}
+                                    <span class="badge badge-danger">Withdrawal</span>
+                                {% else %}
+                                    <span class="badge badge-secondary">{{ transaction.transaction_type }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-3 py-3 whitespace-nowrap text-sm font-medium {% if transaction.amount > 0 %}text-emerald-600{% else %}text-rose-600{% endif %}">
+                                {% if transaction.amount > 0 %}+{% endif %}₦{{ transaction.amount|floatformat:2 }}
+                            </td>
+                            <td class="px-3 py-3 whitespace-nowrap text-sm text-slate-500">{{ transaction.created_at|date:"M d, Y H:i" }}</td>
+                            <td class="px-3 py-3 text-sm text-slate-500">{{ transaction.description|truncatechars:50 }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="px-3 py-4 text-center text-sm text-slate-500">No transactions found</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit User Modal -->
+<div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header border-b border-slate-200 p-5">
+                <h5 class="modal-title text-lg font-semibold text-slate-800" id="editUserModalLabel">Edit User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" action="{% url 'admin_panel:user_edit' %}">
+                {% csrf_token %}
+                <div class="modal-body p-5">
+                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label for="editUsername" class="block text-sm font-medium text-slate-500 mb-1">Username</label>
+                            <input type="text" class="form-input w-full" id="editUsername" name="username" value="{{ user.username }}" readonly>
+                        </div>
+                        <div>
+                            <label for="editEmail" class="block text-sm font-medium text-slate-500 mb-1">Email</label>
+                            <input type="email" class="form-input w-full" id="editEmail" name="email" value="{{ user.email }}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label for="editFirstName" class="block text-sm font-medium text-slate-500 mb-1">First Name</label>
+                            <input type="text" class="form-input w-full" id="editFirstName" name="first_name" value="{{ user.first_name }}">
+                        </div>
+                        <div>
+                            <label for="editLastName" class="block text-sm font-medium text-slate-500 mb-1">Last Name</label>
+                            <input type="text" class="form-input w-full" id="editLastName" name="last_name" value="{{ user.last_name }}">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-slate-500 mb-2">Status</label>
+                        <div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center">
+                                <input type="checkbox" class="form-checkbox h-5 w-5 text-indigo-500" id="editIsActive" name="is_active" {% if user.is_active %}checked{% endif %}>
+                                <span class="ml-2 text-slate-600">Active</span>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <input type="checkbox" class="form-checkbox h-5 w-5 text-indigo-500" id="editIsStaff" name="is_staff" {% if user.is_staff %}checked{% endif %}>
+                                <span class="ml-2 text-slate-600">Staff</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-t border-slate-200 p-5">
+                    <button type="button" class="btn bg-white border-slate-200 hover:border-slate-300 text-slate-600" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn bg-indigo-500 hover:bg-indigo-600 text-white">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Adjust Balance Modal -->
+<div class="modal fade" id="adjustBalanceModal" tabindex="-1" aria-labelledby="adjustBalanceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-b border-slate-200 p-5">
+                <h5 class="modal-title text-lg font-semibold text-slate-800" id="adjustBalanceModalLabel">Adjust User Balance</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" action="{% url 'admin_panel:adjust_balance' user.id %}">
+                {% csrf_token %}
+                <div class="modal-body p-5">
+                    <div class="mb-4">
+                        <label for="currentBalance" class="block text-sm font-medium text-slate-500 mb-1">Current Balance</label>
+                        <input type="text" class="form-input w-full" id="currentBalance" value="₦{{ user_balance.balance|floatformat:2 }}" readonly>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="adjustmentType" class="block text-sm font-medium text-slate-500 mb-1">Adjustment Type</label>
+                        <select class="form-select w-full" id="adjustmentType" name="adjustment_type" required>
+                            <option value="add">Add Funds</option>
+                            <option value="subtract">Subtract Funds</option>
+                            <option value="set">Set Exact Amount</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="adjustmentAmount" class="block text-sm font-medium text-slate-500 mb-1">Amount (₦)</label>
+                        <input type="number" class="form-input w-full" id="adjustmentAmount" name="amount" step="0.01" min="0" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="adjustmentReason" class="block text-sm font-medium text-slate-500 mb-1">Reason</label>
+                        <textarea class="form-textarea w-full" id="adjustmentReason" name="reason" rows="3" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer border-t border-slate-200 p-5">
+                    <button type="button" class="btn bg-white border-slate-200 hover:border-slate-300 text-slate-600" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn bg-indigo-500 hover:bg-indigo-600 text-white">Apply Adjustment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Deactivate User Modal -->
+<div class="modal fade" id="deactivateUserModal" tabindex="-1" aria-labelledby="deactivateUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-b border-slate-200 p-5">
+                <h5 class="modal-title text-lg font-semibold text-slate-800" id="deactivateUserModalLabel">Deactivate User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" action="{% url 'admin_panel:user_deactivate' user.id %}">
+                {% csrf_token %}
+                <div class="modal-body p-5">
+                    <p class="text-slate-600 mb-4">Are you sure you want to deactivate this user?</p>
+                    <div class="bg-slate-50 rounded-lg p-4 mb-4">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 mt-0.5">
+                                <i class="fas fa-exclamation-triangle text-amber-500"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-slate-600">This will prevent the user from logging in and accessing their account.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="deactivationReason" class="block text-sm font-medium text-slate-500 mb-1">Reason for Deactivation</label>
+                        <textarea class="form-textarea w-full" id="deactivationReason" name="reason" rows="3" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer border-t border-slate-200 p-5">
+                    <button type="button" class="btn bg-white border-slate-200 hover:border-slate-300 text-slate-600" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn bg-rose-500 hover:bg-rose-600 text-white">Deactivate User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Initialize AOS animations for modals when they open
+    document.addEventListener('DOMContentLoaded', function() {
+        var modalElements = document.querySelectorAll('.modal');
+        modalElements.forEach(function(modal) {
+            modal.addEventListener('shown.bs.modal', function() {
+                AOS.refresh();
+            });
+        });
+    });
+</script>
+{% endblock %}

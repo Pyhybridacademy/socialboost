@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}Order History - SocialBoost{% endblock %}
+
+{% block content %}
+<!-- Order Status Header -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="fw-bold mb-3">Order History</h1>
+                <p class="lead">Track the status of your orders</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Orders List -->
+<section class="py-5">
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                {% if orders %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Service</th>
+                                    <th>Date</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in orders %}
+                                    <tr>
+                                        <td>#{{ order.id }}</td>
+                                        <td>{{ order.service.name }}</td>
+                                        <td>{{ order.created_at|date:"M d, Y" }}</td>
+                                        <td>{{ order.quantity }}</td>
+                                        <td>₦{{ order.charge|floatformat:2 }}</td>
+                                        <td>
+                                            {% if order.status == 'pending' %}
+                                                <span class="badge bg-warning">Pending</span>
+                                            {% elif order.status == 'processing' %}
+                                                <span class="badge bg-info">Processing</span>
+                                            {% elif order.status == 'completed' %}
+                                                <span class="badge bg-success">Completed</span>
+                                            {% elif order.status == 'canceled' %}
+                                                <span class="badge bg-secondary">Canceled</span>
+                                            {% elif order.status == 'error' %}
+                                                <span class="badge bg-danger">Error</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">{{ order.status }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'order_status' order_id=order.id %}" class="btn btn-sm btn-outline-primary">Details</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    {% if orders.has_other_pages %}
+                        <nav class="mt-4" aria-label="Orders pagination">
+                            <ul class="pagination justify-content-center">
+                                {% if orders.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ orders.previous_page_number }}" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <span class="page-link" aria-hidden="true">&laquo;</span>
+                                    </li>
+                                {% endif %}
+                                
+                                {% for i in orders.paginator.page_range %}
+                                    {% if orders.number == i %}
+                                        <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+                                    {% else %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                                
+                                {% if orders.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ orders.next_page_number }}" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <span class="page-link" aria-hidden="true">&raquo;</span>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    {% endif %}
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+                        <h4>No orders yet</h4>
+                        <p>You haven't placed any orders yet.</p>
+                        <a href="{% url 'services' %}" class="btn btn-primary mt-3">Browse Services</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

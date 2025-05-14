@@ -1,0 +1,29 @@
+{% extends 'admin/base_site.html' %}
+
+{% block content %}
+<div class="container py-4">
+    <h1>Adjust Markup Percentage</h1>
+    
+    <div class="alert alert-info mt-3">
+        <p><strong>Current Markup:</strong> {{ settings.markup_percentage }}%</p>
+        <p>Adjusting the markup percentage will affect the prices of all services. The changes will be applied immediately.</p>
+    </div>
+    
+    <div class="card mt-4">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label for="markup_percentage" class="form-label">New Markup Percentage</label>
+                    <input type="number" step="0.01" class="form-control" id="markup_percentage" name="markup_percentage" value="{{ settings.markup_percentage }}" required>
+                    <div class="form-text">Enter the percentage value (e.g., 20 for 20% markup)</div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Update Markup</button>
+                <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

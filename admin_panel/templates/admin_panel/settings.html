@@ -1,0 +1,120 @@
+{% extends 'admin_panel/base.html' %}
+{% block title %}Settings - {{ site_settings.site_name }} Admin{% endblock %}
+{% block content %}
+<div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+    <!-- Page header -->
+    <div class="mb-8" data-aos="fade-down">
+        <h1 class="text-2xl md:text-3xl font-bold text-slate-800">System Settings</h1>
+        <p class="text-slate-500 mt-2">Configure your platform settings and preferences</p>
+    </div>
+    
+    <!-- Settings Form -->
+    <div class="card-hover bg-white rounded-xl shadow-sm border border-slate-200 p-5" data-aos="fade-up">
+        <form method="post" action="{% url 'admin_panel:save_settings' %}">
+            {% csrf_token %}
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <label for="site_name" class="block text-sm font-medium text-slate-600 mb-2">Site Name</label>
+                    <input type="text" id="site_name" name="site_name" value="{{ site_settings.site_name }}"
+                           class="w-full px-3 py-2 border border-slate-300 rounded-lg input-focus" required>
+                </div>
+                <div>
+                    <label for="contact_email" class="block text-sm font-medium text-slate-600 mb-2">Contact Email</label>
+                    <input type="email" id="contact_email" name="contact_email" value="{{ site_settings.contact_email }}"
+                           class="w-full px-3 py-2 border border-slate-300 rounded-lg input-focus" required>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <label for="site_description" class="block text-sm font-medium text-slate-600 mb-2">Site Description</label>
+                <textarea id="site_description" name="site_description" rows="3"
+                          class="w-full px-3 py-2 border border-slate-300 rounded-lg input-focus">{{ site_settings.site_description }}</textarea>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div>
+                    <label for="support_phone" class="block text-sm font-medium text-slate-600 mb-2">Support Phone</label>
+                    <input type="text" id="support_phone" name="support_phone" value="{{ site_settings.support_phone }}"
+                           class="w-full px-3 py-2 border border-slate-300 rounded-lg input-focus">
+                </div>
+                <div>
+                    <label for="markup_percentage" class="block text-sm font-medium text-slate-600 mb-2">Markup Percentage</label>
+                    <div class="relative">
+                        <input type="number" id="markup_percentage" name="markup_percentage" value="{{ site_settings.markup_percentage }}" step="0.01" min="0"
+                               class="w-full px-3 py-2 border border-slate-300 rounded-lg input-focus pr-10" required>
+                        <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-500">%</span>
+                    </div>
+                </div>
+                <div>
+                    <label for="min_deposit" class="block text-sm font-medium text-slate-600 mb-2">Minimum Deposit (₦)</label>
+                    <input type="number" id="min_deposit" name="min_deposit" value="{{ site_settings.min_deposit }}" step="0.01" min="0"
+                           class="w-full px-3 py-2 border border-slate-300 rounded-lg input-focus" required>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <label for="min_withdrawal_amount" class="block text-sm font-medium text-slate-600 mb-2">Minimum Withdrawal Amount (₦)</label>
+                <input type="number" id="min_withdrawal_amount" name="min_withdrawal_amount" value="{{ site_settings.min_withdrawal_amount }}" step="0.01" min="0"
+                       class="w-full px-3 py-2 border border-slate-300 rounded-lg input-focus" required>
+            </div>
+            
+            <div class="mb-6">
+                <div class="flex items-center">
+                    <input type="checkbox" id="maintenance_mode" name="maintenance_mode" {% if site_settings.maintenance_mode %}checked{% endif %}
+                           class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                    <label for="maintenance_mode" class="ml-2 block text-sm text-gray-900">
+                        Enable Maintenance Mode
+                    </label>
+                </div>
+                <p class="text-sm text-slate-500 mt-1">When enabled, only administrators can access the site.</p>
+            </div>
+            
+            <div class="flex justify-end space-x-3">
+                <button type="button" class="px-4 py-2 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-100 transition-colors">
+                    Cancel
+                </button>
+                <button type="submit" class="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg transition-colors">
+                    Save Settings
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- API Settings -->
+    <div class="card-hover bg-white rounded-xl shadow-sm border border-slate-200 p-5 mt-8" data-aos="fade-up" data-aos-delay="100">
+        <h2 class="text-lg font-semibold text-slate-800 mb-4">API Configuration</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-sm font-medium text-slate-600 mb-2">API Status</label>
+                <div class="flex items-center">
+                    <span id="apiStatus" class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium mr-3">
+                        <span class="w-2 h-2 rounded-full bg-slate-300 mr-2"></span>
+                        Checking...
+                    </span>
+                    <button id="testApiBtn" class="text-sm text-indigo-600 hover:text-indigo-800">
+                        Test Connection
+                    </button>
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-600 mb-2">Current Balance</label>
+                <div class="flex items-center">
+                    <span id="apiBalance" class="text-slate-800 font-medium">Loading...</span>
+                    <a href="{% url 'admin_panel:check_balance' %}" class="ml-3 text-sm text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-sync-alt mr-1"></i> Refresh
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-6">
+            <a href="{% url 'admin_panel:adjust_markup' %}" class="inline-flex items-center px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-lg transition-colors">
+                <i class="fas fa-percentage mr-2"></i>
+                <span>Adjust Markup Percentage</span>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

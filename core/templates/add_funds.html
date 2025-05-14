@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Funds - SocialBoost{% endblock %}
+
+{% block extra_css %}
+<style>
+    .payment-method-card {
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .payment-method-card:hover {
+        transform: translateY(-5px);
+    }
+    .payment-method-card.selected {
+        border-color: var(--primary-color);
+        background-color: rgba(74, 108, 247, 0.05);
+    }
+    .currency-symbol {
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Add Funds Header -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="fw-bold mb-3">Add Funds</h1>
+                <p class="lead">Add funds to your account to place orders</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Add Funds Form -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mx-auto">
+                <div class="card mb-4">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Your Balance</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <h2 class="display-4 text-primary mb-4">₦{{ user_balance.balance|floatformat:2 }}</h2>
+                        <p class="text-muted">Current account balance</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Add Funds</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="{% url 'process_payment' %}" id="payment-form">
+                            {% csrf_token %}
+                            <div class="mb-4">
+                                <label for="amount" class="form-label">Amount to Add (₦)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text currency-symbol">₦</span>
+                                    {{ form.amount }}
+                                </div>
+                                {% if form.amount.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.amount.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="form-label">Select Payment Method</label>
+                                <div class="row g-3">
+                                    {% for value, label in form.payment_method.field.choices %}
+                                        <div class="col-md-4">
+                                            <div class="card payment-method-card p-3 text-center" data-method="{{ value }}">
+                                                <input type="radio" name="payment_method" id="id_payment_method_{{ forloop.counter0 }}" value="{{ value }}" class="d-none" {% if forloop.first %}checked{% endif %}>
+                                                <label for="id_payment_method_{{ forloop.counter0 }}">
+                                                    {% if value == 'paypal' %}
+                                                        <i class="fab fa-paypal text-primary fa-2x mb-2"></i>
+                                                    {% elif value == 'credit_card' %}
+                                                        <i class="far fa-credit-card text-primary fa-2x mb-2"></i>
+                                                    {% elif value == 'crypto' %}
+                                                        <i class="fab fa-bitcoin text-primary fa-2x mb-2"></i>
+                                                    {% endif %}
+                                                    <div>{{ label }}</div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            
+                            <div class="alert alert-info mb-4">
+                                <i class="fas fa-info-circle me-2"></i> You will be redirected to Paystack's secure payment page to complete your transaction.
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg" id="submit-button">Proceed to Payment</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Payment method selection
+        const paymentCards = document.querySelectorAll('.payment-method-card');
+        
+        // Select the first payment method by default
+        paymentCards[0].classList.add('selected');
+        
+        paymentCards.forEach(card => {
+            card.addEventListener('click', function() {
+                // Remove selected class from all cards
+                paymentCards.forEach(c => c.classList.remove('selected'));
+                
+                // Add selected class to clicked card
+                this.classList.add('selected');
+                
+                // Check the radio button
+                const radio = this.querySelector('input[type="radio"]');
+                radio.checked = true;
+            });
+        });
+    });
+</script>
+{% endblock %}

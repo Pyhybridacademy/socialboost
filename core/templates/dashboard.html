@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - SocialBoost{% endblock %}
+
+{% block content %}
+<!-- Dashboard Header -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="fw-bold mb-2">Dashboard</h1>
+                <p class="lead mb-0">Welcome back, {{ user.first_name|default:user.username }}!</p>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <div class="d-flex justify-content-md-end">
+                    <div class="me-3">
+                        <span class="d-block text-muted small">Your Balance</span>
+                        <span class="fw-bold text-primary fs-4">₦{{ user_balance.balance|floatformat:2 }}</span>
+                    </div>
+                    <a href="{% url 'add_funds' %}" class="btn btn-primary align-self-center">Add Funds</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Dashboard Content -->
+<section class="py-5">
+    <div class="container">
+        <!-- Stats Cards -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="card h-100 dashboard-stat stat-primary text-center">
+                    <div class="card-body">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3 class="fw-bold">{{ total_orders }}</h3>
+                        <p class="mb-0">Total Orders</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 dashboard-stat stat-success text-center">
+                    <div class="card-body">
+                        <i class="fas fa-check-circle"></i>
+                        <h3 class="fw-bold">{{ completed_orders }}</h3>
+                        <p class="mb-0">Completed Orders</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 dashboard-stat stat-info text-center">
+                    <div class="card-body">
+                        <i class="fas fa-spinner"></i>
+                        <h3 class="fw-bold">{{ processing_orders }}</h3>
+                        <p class="mb-0">Processing Orders</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 dashboard-stat stat-warning text-center">
+                    <div class="card-body">
+                        <i class="fas fa-clock"></i>
+                        <h3 class="fw-bold">{{ pending_orders }}</h3>
+                        <p class="mb-0">Pending Orders</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Recent Orders -->
+            <div class="col-lg-7">
+                <div class="card h-100">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Recent Orders</h5>
+                        <a href="{% url 'order_status' %}" class="btn btn-sm btn-outline-primary">View All</a>
+                    </div>
+                    <div class="card-body">
+                        {% if recent_orders %}
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Service</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                            <th>Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for order in recent_orders %}
+                                            <tr>
+                                                <td>
+                                                    <a href="{% url 'order_status' order_id=order.id %}" class="text-decoration-none">
+                                                        #{{ order.id }}
+                                                    </a>
+                                                </td>
+                                                <td>{{ order.service.name|truncatechars:20 }}</td>
+                                                <td>{{ order.created_at|date:"M d, Y" }}</td>
+                                                <td>
+                                                    {% if order.status == 'pending' %}
+                                                        <span class="badge bg-warning">Pending</span>
+                                                    {% elif order.status == 'processing' %}
+                                                        <span class="badge bg-info">Processing</span>
+                                                    {% elif order.status == 'completed' %}
+                                                        <span class="badge bg-success">Completed</span>
+                                                    {% elif order.status == 'canceled' %}
+                                                        <span class="badge bg-secondary">Canceled</span>
+                                                    {% elif order.status == 'error' %}
+                                                        <span class="badge bg-danger">Error</span>
+                                                    {% else %}
+                                                        <span class="badge bg-secondary">{{ order.status }}</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>₦{{ order.charge|floatformat:2 }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="text-center py-4">
+                                <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+                                <h5>No orders yet</h5>
+                                <p>You haven't placed any orders yet.</p>
+                                <a href="{% url 'services' %}" class="btn btn-primary mt-2">Browse Services</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Transactions -->
+            <div class="col-lg-5">
+                <div class="card h-100">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Recent Transactions</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if recent_transactions %}
+                            <ul class="list-group list-group-flush">
+                                {% for transaction in recent_transactions %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                        <div>
+                                            <h6 class="mb-1">{{ transaction.description }}</h6>
+                                            <small class="text-muted">{{ transaction.created_at|date:"M d, Y H:i" }}</small>
+                                        </div>
+                                        <span class="
+                                            {% if transaction.transaction_type == 'deposit' %}text-success
+                                            {% elif transaction.transaction_type == 'refund' %}text-info
+                                            {% else %}text-danger{% endif %} fw-bold">
+                                            {% if transaction.transaction_type == 'deposit' or transaction.transaction_type == 'refund' %}+{% else %}-{% endif %}
+                                            ₦{{ transaction.amount|floatformat:2 }}
+                                        </span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <div class="text-center py-4">
+                                <i class="fas fa-exchange-alt fa-3x text-muted mb-3"></i>
+                                <h5>No transactions yet</h5>
+                                <p>Your transaction history will appear here.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Quick Actions</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <a href="{% url 'services' %}" class="card h-100 text-decoration-none text-reset">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-shopping-cart fa-2x text-primary mb-3"></i>
+                                        <h5>Place New Order</h5>
+                                        <p class="text-muted mb-0">Browse our services and place a new order</p>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-md-4">
+                                <a href="{% url 'add_funds' %}" class="card h-100 text-decoration-none text-reset">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-wallet fa-2x text-primary mb-3"></i>
+                                        <h5>Add Funds</h5>
+                                        <p class="text-muted mb-0">Add funds to your account balance</p>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-md-4">
+                                <a href="{% url 'order_status' %}" class="card h-100 text-decoration-none text-reset">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-tasks fa-2x text-primary mb-3"></i>
+                                        <h5>Check Order Status</h5>
+                                        <p class="text-muted mb-0">View the status of your orders</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
