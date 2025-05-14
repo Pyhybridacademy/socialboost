@@ -176,8 +176,8 @@ LOGGING = {
 # Add these settings to your settings.py file
 
 # Paystack Settings
-PAYSTACK_PUBLIC_KEY = 'pk_live_ad2b7664f2fc18bdd2b449f4536548c99fe969c5'
-PAYSTACK_SECRET_KEY = 'sk_live_d4787bb7715e038282ffeed014924189fcf0e480'
+PAYSTACK_PUBLIC_KEY = ''
+PAYSTACK_SECRET_KEY = ''
 
 # Currency settings
 CURRENCY_SYMBOL = '₦'
