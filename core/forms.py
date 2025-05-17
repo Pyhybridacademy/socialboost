@@ -1,27 +1,91 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from .models import Order
 
+class FancyTextInput(forms.TextInput):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault('attrs', {}).update({
+            'class': 'w-full px-5 py-3 rounded-lg font-medium border-2 border-gray-200 placeholder-gray-400 text-sm focus:outline-none focus:border-primary-500 focus:ring-0 transition-all duration-300',
+        })
+        super().__init__(*args, **kwargs)
+
+class FancyEmailInput(forms.EmailInput):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault('attrs', {}).update({
+            'class': 'w-full px-5 py-3 rounded-lg font-medium border-2 border-gray-200 placeholder-gray-400 text-sm focus:outline-none focus:border-primary-500 focus:ring-0 transition-all duration-300',
+        })
+        super().__init__(*args, **kwargs)
+
+class FancyPasswordInput(forms.PasswordInput):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault('attrs', {}).update({
+            'class': 'w-full px-5 py-3 rounded-lg font-medium border-2 border-gray-200 placeholder-gray-400 text-sm focus:outline-none focus:border-primary-500 focus:ring-0 transition-all duration-300',
+        })
+        super().__init__(*args, **kwargs)
+
 class UserRegistrationForm(UserCreationForm):
-    email = forms.EmailField(required=True)
-    first_name = forms.CharField(required=False)
-    last_name = forms.CharField(required=False)
+    email = forms.EmailField(
+        required=True,
+        widget=FancyEmailInput(attrs={
+            'placeholder': 'your@email.com',
+            'data-aos': 'fade-up',
+            'data-aos-delay': '100'
+        })
+    )
+    first_name = forms.CharField(
+        required=False,
+        widget=FancyTextInput(attrs={
+            'placeholder': 'First Name',
+            'data-aos': 'fade-up',
+            'data-aos-delay': '150'
+        })
+    )
+    last_name = forms.CharField(
+        required=False,
+        widget=FancyTextInput(attrs={
+            'placeholder': 'Last Name',
+            'data-aos': 'fade-up',
+            'data-aos-delay': '200'
+        })
+    )
     
     class Meta:
         model = User
         fields = ('username', 'email', 'first_name', 'last_name', 'password1', 'password2')
-    
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        user.email = self.cleaned_data['email']
-        user.first_name = self.cleaned_data['first_name']
-        user.last_name = self.cleaned_data['last_name']
         
-        if commit:
-            user.save()
-        
-        return user
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].widget = FancyTextInput(attrs={
+            'placeholder': 'Username',
+            'data-aos': 'fade-up',
+            'data-aos-delay': '50'
+        })
+        self.fields['password1'].widget = FancyPasswordInput(attrs={
+            'placeholder': 'Password',
+            'data-aos': 'fade-up',
+            'data-aos-delay': '250'
+        })
+        self.fields['password2'].widget = FancyPasswordInput(attrs={
+            'placeholder': 'Confirm Password',
+            'data-aos': 'fade-up',
+            'data-aos-delay': '300'
+        })
+
+class UserLoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].widget = FancyTextInput(attrs={
+            'placeholder': 'Username or Email',
+            'data-aos': 'fade-up',
+            'data-aos-delay': '50'
+        })
+        self.fields['password'].widget = FancyPasswordInput(attrs={
+            'placeholder': 'Password',
+            'data-aos': 'fade-up',
+            'data-aos-delay': '100'
+        })
+
 
 from django import forms
 from .models import Service

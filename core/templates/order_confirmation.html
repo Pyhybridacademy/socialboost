@@ -1,128 +1,131 @@
-{% extends 'base.html' %}
-
-{% block title %}Order Confirmation - SocialBoost{% endblock %}
-
+{% extends 'dash_base.html' %}
+{% block title %}Order Confirmation - {{ site_settings.site_name }}{% endblock %}
+{% block page_title %}Order Confirmation{% endblock %}
 {% block content %}
-<!-- Confirmation Header -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 mx-auto text-center">
-                <div class="mb-4">
-                    <i class="fas fa-check-circle text-success fa-4x"></i>
-                </div>
-                <h1 class="fw-bold mb-3">Order Placed Successfully!</h1>
-                <p class="lead">Your order has been received and is being processed.</p>
-            </div>
+<div class="animate-fade-in">
+    <!-- Confirmation Header -->
+    <div class="text-center mb-8 animate-slide-up">
+        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-check-circle text-green-500 text-3xl"></i>
         </div>
+        <h2 class="text-2xl md:text-3xl font-display font-bold text-gray-800 mb-2">Order Placed Successfully!</h2>
+        <p class="text-gray-600 max-w-lg mx-auto">Your order has been received and is being processed.</p>
     </div>
-</section>
 
-<!-- Order Details -->
-<section class="py-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <div class="card mb-4">
-                    <div class="card-header bg-white">
-                        <h5 class="mb-0">Order Summary</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row mb-4">
-                            <div class="col-md-6">
-                                <h6 class="text-muted">Order Details</h6>
-                                <p><strong>Order ID:</strong> #{{ order.id }}</p>
-                                <p><strong>Date:</strong> {{ order.created_at|date:"F d, Y H:i" }}</p>
-                                <p><strong>Status:</strong> 
-                                    {% if order.status == 'pending' %}
-                                        <span class="badge bg-warning">Pending</span>
-                                    {% elif order.status == 'processing' %}
-                                        <span class="badge bg-info">Processing</span>
-                                    {% elif order.status == 'completed' %}
-                                        <span class="badge bg-success">Completed</span>
-                                    {% elif order.status == 'canceled' %}
-                                        <span class="badge bg-secondary">Canceled</span>
-                                    {% elif order.status == 'error' %}
-                                        <span class="badge bg-danger">Error</span>
-                                    {% else %}
-                                        <span class="badge bg-secondary">{{ order.status }}</span>
-                                    {% endif %}
-                                </p>
-                            </div>
-                            <div class="col-md-6">
-                                <h6 class="text-muted">Service Information</h6>
-                                <p><strong>Service:</strong> {{ order.service.name }}</p>
-                                <p><strong>Quantity:</strong> {{ order.quantity }}</p>
-                                <p><strong>Price:</strong> ₦{{ order.charge|floatformat:2 }}</p>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-4">
-                            <h6 class="text-muted">Link/URL</h6>
-                            <div class="input-group">
-                                <input type="text" class="form-control" value="{{ order.link }}" readonly>
-                                <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('{{ order.link }}')">
-                                    <i class="fas fa-copy"></i>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        {% if order.comments %}
-                            <div class="mb-4">
-                                <h6 class="text-muted">Additional Comments</h6>
-                                <p>{{ order.comments }}</p>
-                            </div>
-                        {% endif %}
-                        
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle me-2"></i> Your order is now being processed. You can check the status of your order at any time from your dashboard or orders page.
-                        </div>
+    <!-- Order Details -->
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden animate-slide-up" style="animation-delay: 0.1s;">
+        <div class="p-4 md:p-6 border-b">
+            <h3 class="font-display font-bold text-gray-800 text-sm md:text-base">Order Summary</h3>
+        </div>
+        <div class="p-4 md:p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <h4 class="text-sm font-medium text-gray-500 mb-3">ORDER DETAILS</h4>
+                    <div class="space-y-2">
+                        <p><span class="font-medium text-gray-700">Order ID:</span> #{{ order.id }}</p>
+                        <p><span class="font-medium text-gray-700">Date:</span> {{ order.created_at|date:"F d, Y H:i" }}</p>
+                        <p><span class="font-medium text-gray-700">Status:</span> 
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                                {% if order.status == 'pending' %}bg-yellow-100 text-yellow-800
+                                {% elif order.status == 'processing' %}bg-blue-100 text-blue-800
+                                {% elif order.status == 'completed' %}bg-green-100 text-green-800
+                                {% elif order.status == 'canceled' %}bg-gray-100 text-gray-800
+                                {% elif order.status == 'error' %}bg-red-100 text-red-800
+                                {% else %}bg-gray-100 text-gray-800{% endif %}">
+                                <span class="badge-dot 
+                                    {% if order.status == 'pending' %}bg-yellow-500
+                                    {% elif order.status == 'processing' %}bg-blue-500
+                                    {% elif order.status == 'completed' %}bg-green-500
+                                    {% elif order.status == 'canceled' %}bg-gray-500
+                                    {% elif order.status == 'error' %}bg-red-500
+                                    {% else %}bg-gray-500{% endif %}"></span>
+                                {{ order.status|title }}
+                            </span>
+                        </p>
                     </div>
                 </div>
-                
-                <div class="card mb-4">
-                    <div class="card-header bg-white">
-                        <h5 class="mb-0">What's Next?</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-4">
-                            <div class="col-md-4">
-                                <div class="text-center">
-                                    <i class="fas fa-clock fa-2x text-primary mb-3"></i>
-                                    <h5>Processing</h5>
-                                    <p class="text-muted">Your order is being processed by our system.</p>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="text-center">
-                                    <i class="fas fa-spinner fa-2x text-primary mb-3"></i>
-                                    <h5>Delivery</h5>
-                                    <p class="text-muted">We'll deliver your order as quickly as possible.</p>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="text-center">
-                                    <i class="fas fa-check-circle fa-2x text-primary mb-3"></i>
-                                    <h5>Completion</h5>
-                                    <p class="text-muted">You'll be notified when your order is completed.</p>
-                                </div>
-                            </div>
-                        </div>
+                <div>
+                    <h4 class="text-sm font-medium text-gray-500 mb-3">SERVICE INFORMATION</h4>
+                    <div class="space-y-2">
+                        <p><span class="font-medium text-gray-700">Service:</span> {{ order.service.name }}</p>
+                        <p><span class="font-medium text-gray-700">Quantity:</span> {{ order.quantity }}</p>
+                        <p><span class="font-medium text-gray-700">Price:</span> ₦{{ order.charge|floatformat:2 }}</p>
                     </div>
                 </div>
-                
-                <div class="d-flex justify-content-between">
-                    <a href="{% url 'order_status' order_id=order.id %}" class="btn btn-primary">
-                        <i class="fas fa-eye me-2"></i> View Order Details
-                    </a>
-                    <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">
-                        <i class="fas fa-home me-2"></i> Go to Dashboard
-                    </a>
+            </div>
+            
+            <div class="mb-6">
+                <h4 class="text-sm font-medium text-gray-500 mb-2">LINK/URL</h4>
+                <div class="flex">
+                    <input type="text" class="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-primary-500 focus:border-primary-500" 
+                           value="{{ order.link }}" readonly>
+                    <button class="px-3 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r-md hover:bg-gray-200" 
+                            onclick="copyToClipboard('{{ order.link }}')">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+            
+            {% if order.comments %}
+            <div class="mb-6">
+                <h4 class="text-sm font-medium text-gray-500 mb-2">ADDITIONAL COMMENTS</h4>
+                <div class="bg-gray-50 p-3 rounded-md">
+                    <p class="text-gray-700">{{ order.comments }}</p>
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="p-3 rounded-lg bg-blue-50 text-blue-700 mb-6">
+                <div class="flex items-start">
+                    <i class="fas fa-info-circle mt-1 mr-2"></i>
+                    <p>Your order is now being processed. You can check the status of your order at any time from your dashboard or orders page.</p>
                 </div>
             </div>
         </div>
     </div>
-</section>
+
+    <!-- What's Next -->
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden mt-6 animate-slide-up" style="animation-delay: 0.2s;">
+        <div class="p-4 md:p-6 border-b">
+            <h3 class="font-display font-bold text-gray-800 text-sm md:text-base">What's Next?</h3>
+        </div>
+        <div class="p-4 md:p-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="text-center p-4">
+                    <div class="w-12 h-12 bg-primary-50 text-primary-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-clock text-xl"></i>
+                    </div>
+                    <h4 class="font-medium text-gray-800 mb-1">Processing</h4>
+                    <p class="text-sm text-gray-500">Your order is being processed by our system.</p>
+                </div>
+                <div class="text-center p-4">
+                    <div class="w-12 h-12 bg-primary-50 text-primary-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-spinner text-xl"></i>
+                    </div>
+                    <h4 class="font-medium text-gray-800 mb-1">Delivery</h4>
+                    <p class="text-sm text-gray-500">We'll deliver your order as quickly as possible.</p>
+                </div>
+                <div class="text-center p-4">
+                    <div class="w-12 h-12 bg-primary-50 text-primary-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-check-circle text-xl"></i>
+                    </div>
+                    <h4 class="font-medium text-gray-800 mb-1">Completion</h4>
+                    <p class="text-sm text-gray-500">You'll be notified when your order is completed.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex flex-col sm:flex-row gap-3 mt-6 animate-slide-up" style="animation-delay: 0.3s;">
+        <a href="{% url 'order_status' order_id=order.id %}" class="px-4 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-lg hover:from-primary-600 hover:to-secondary-600 transition-colors duration-300 font-medium text-center flex-1">
+            <i class="fas fa-eye mr-2"></i> View Order Details
+        </a>
+        <a href="{% url 'dashboard' %}" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors duration-300 font-medium text-center flex-1">
+            <i class="fas fa-home mr-2"></i> Go to Dashboard
+        </a>
+    </div>
+</div>
 {% endblock %}
 
 {% block extra_js %}

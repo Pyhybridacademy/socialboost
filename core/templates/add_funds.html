@@ -1,137 +1,121 @@
-{% extends 'base.html' %}
-
-{% block title %}Add Funds - SocialBoost{% endblock %}
-
-{% block extra_css %}
-<style>
-    .payment-method-card {
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-    .payment-method-card:hover {
-        transform: translateY(-5px);
-    }
-    .payment-method-card.selected {
-        border-color: var(--primary-color);
-        background-color: rgba(74, 108, 247, 0.05);
-    }
-    .currency-symbol {
-        font-weight: bold;
-    }
-</style>
-{% endblock %}
+{% extends 'dash_base.html' %}
+{% block title %}Add Funds - {{ site_settings.site_name }}{% endblock %}
+{% block page_title %}Add Funds{% endblock %}
 
 {% block content %}
-<!-- Add Funds Header -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 mx-auto text-center">
-                <h1 class="fw-bold mb-3">Add Funds</h1>
-                <p class="lead">Add funds to your account to place orders</p>
-            </div>
+<div class="animate-fade-in">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8">
+        <div class="w-full md:w-auto mb-4 md:mb-0">
+            <h2 class="text-xl md:text-2xl font-display font-bold text-gray-800 mb-1">Add Funds</h2>
+            <p class="text-gray-600">Add funds to your account to place orders</p>
         </div>
     </div>
-</section>
 
-<!-- Add Funds Form -->
-<section class="py-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6 mx-auto">
-                <div class="card mb-4">
-                    <div class="card-header bg-white">
-                        <h5 class="mb-0">Your Balance</h5>
-                    </div>
-                    <div class="card-body text-center">
-                        <h2 class="display-4 text-primary mb-4">₦{{ user_balance.balance|floatformat:2 }}</h2>
-                        <p class="text-muted">Current account balance</p>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-header bg-white">
-                        <h5 class="mb-0">Add Funds</h5>
-                    </div>
-                    <div class="card-body">
-                        <form method="post" action="{% url 'process_payment' %}" id="payment-form">
-                            {% csrf_token %}
-                            <div class="mb-4">
-                                <label for="amount" class="form-label">Amount to Add (₦)</label>
-                                <div class="input-group">
-                                    <span class="input-group-text currency-symbol">₦</span>
-                                    {{ form.amount }}
-                                </div>
-                                {% if form.amount.errors %}
-                                    <div class="text-danger">
-                                        {% for error in form.amount.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Balance Card -->
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden animate-slide-up">
+            <div class="p-4 md:p-6 border-b">
+                <h3 class="font-display font-bold text-gray-800 text-sm md:text-base">Your Balance</h3>
+            </div>
+            <div class="p-6 text-center">
+                <h2 class="text-4xl md:text-5xl font-bold text-primary-600 mb-4">₦{{ user_balance.balance|floatformat:2 }}</h2>
+                <p class="text-gray-500">Current account balance</p>
+            </div>
+        </div>
+
+        <!-- Add Funds Form -->
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden animate-slide-up" style="animation-delay: 0.1s;">
+            <div class="p-4 md:p-6 border-b">
+                <h3 class="font-display font-bold text-gray-800 text-sm md:text-base">Add Funds</h3>
+            </div>
+            <div class="p-4 md:p-6">
+                <form method="post" action="{% url 'process_payment' %}" id="payment-form">
+                    {% csrf_token %}
+                    
+                    <!-- Amount Input -->
+                    <div class="mb-6">
+                        <label for="amount" class="block text-sm font-medium text-gray-700 mb-2">Amount to Add (₦)</label>
+                        <div class="relative rounded-md shadow-sm">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 font-bold">₦</span>
                             </div>
-                            
-                            <div class="mb-4">
-                                <label class="form-label">Select Payment Method</label>
-                                <div class="row g-3">
-                                    {% for value, label in form.payment_method.field.choices %}
-                                        <div class="col-md-4">
-                                            <div class="card payment-method-card p-3 text-center" data-method="{{ value }}">
-                                                <input type="radio" name="payment_method" id="id_payment_method_{{ forloop.counter0 }}" value="{{ value }}" class="d-none" {% if forloop.first %}checked{% endif %}>
-                                                <label for="id_payment_method_{{ forloop.counter0 }}">
-                                                    {% if value == 'paypal' %}
-                                                        <i class="fab fa-paypal text-primary fa-2x mb-2"></i>
-                                                    {% elif value == 'credit_card' %}
-                                                        <i class="far fa-credit-card text-primary fa-2x mb-2"></i>
-                                                    {% elif value == 'crypto' %}
-                                                        <i class="fab fa-bitcoin text-primary fa-2x mb-2"></i>
-                                                    {% endif %}
-                                                    <div>{{ label }}</div>
-                                                </label>
-                                            </div>
+                            {{ form.amount }}
+                        </div>
+                        {% if form.amount.errors %}
+                            <div class="mt-2 text-sm text-red-600">
+                                {% for error in form.amount.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Payment Methods -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Select Payment Method</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            {% for value, label in form.payment_method.field.choices %}
+                                <div>
+                                    <input type="radio" name="payment_method" id="id_payment_method_{{ forloop.counter0 }}" 
+                                           value="{{ value }}" class="hidden peer" {% if forloop.first %}checked{% endif %}>
+                                    <label for="id_payment_method_{{ forloop.counter0 }}" 
+                                           class="block p-4 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200 
+                                                  hover:border-primary-300 peer-checked:border-primary-500 peer-checked:bg-primary-50">
+                                        <div class="flex flex-col items-center">
+                                            {% if value == 'paypal' %}
+                                                <i class="fab fa-paypal text-primary-500 text-2xl mb-2"></i>
+                                            {% elif value == 'credit_card' %}
+                                                <i class="far fa-credit-card text-primary-500 text-2xl mb-2"></i>
+                                            {% elif value == 'crypto' %}
+                                                <i class="fab fa-bitcoin text-primary-500 text-2xl mb-2"></i>
+                                            {% endif %}
+                                            <span class="text-sm font-medium">{{ label }}</span>
                                         </div>
-                                    {% endfor %}
+                                    </label>
                                 </div>
-                            </div>
-                            
-                            <div class="alert alert-info mb-4">
-                                <i class="fas fa-info-circle me-2"></i> You will be redirected to Paystack's secure payment page to complete your transaction.
-                            </div>
-                            
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary btn-lg" id="submit-button">Proceed to Payment</button>
-                            </div>
-                        </form>
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
+                    
+                    <!-- Info Alert -->
+                    <div class="p-3 rounded-lg bg-blue-50 text-blue-700 mb-6">
+                        <div class="flex items-start">
+                            <i class="fas fa-info-circle mt-1 mr-2"></i>
+                            <p>You will be redirected to Paystack's secure payment page to complete your transaction.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <button type="submit" 
+                            class="w-full px-4 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-lg 
+                                   hover:from-primary-600 hover:to-secondary-600 transition-colors duration-300 font-medium">
+                        Proceed to Payment
+                    </button>
+                </form>
             </div>
         </div>
     </div>
-</section>
+</div>
 {% endblock %}
 
 {% block extra_js %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Payment method selection
-        const paymentCards = document.querySelectorAll('.payment-method-card');
-        
-        // Select the first payment method by default
-        paymentCards[0].classList.add('selected');
-        
-        paymentCards.forEach(card => {
-            card.addEventListener('click', function() {
-                // Remove selected class from all cards
-                paymentCards.forEach(c => c.classList.remove('selected'));
-                
-                // Add selected class to clicked card
-                this.classList.add('selected');
-                
-                // Check the radio button
-                const radio = this.querySelector('input[type="radio"]');
-                radio.checked = true;
+        // Amount input validation
+        const amountInput = document.getElementById('id_amount');
+        if (amountInput) {
+            amountInput.classList.add('block', 'w-full', 'pl-8', 'pr-3', 'py-2', 'border', 'border-gray-300', 
+                                     'rounded-md', 'shadow-sm', 'focus:outline-none', 'focus:ring-primary-500', 
+                                     'focus:border-primary-500');
+            
+            amountInput.addEventListener('input', function() {
+                // Ensure amount is positive
+                if (this.value < 0) {
+                    this.value = Math.abs(this.value);
+                }
             });
-        });
+        }
     });
 </script>
 {% endblock %}

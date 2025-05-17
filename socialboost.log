@@ -5841,3 +5841,397 @@ INFO 2025-05-14 15:05:14,709 basehttp "GET / HTTP/1.1" 200 2763
 INFO 2025-05-14 15:05:53,369 basehttp "GET /dashboard/ HTTP/1.1" 200 24859
 INFO 2025-05-14 15:05:59,099 basehttp "GET /dashboard/ HTTP/1.1" 200 24859
 INFO 2025-05-14 15:06:01,148 basehttp "GET / HTTP/1.1" 200 20752
+INFO 2025-05-14 15:29:58,984 autoreload Watching for file changes with StatReloader
+INFO 2025-05-14 15:30:19,927 basehttp "GET / HTTP/1.1" 200 2763
+INFO 2025-05-14 15:30:27,851 basehttp "GET /admin_panel/settings/ HTTP/1.1" 200 17241
+INFO 2025-05-14 15:30:41,207 basehttp "POST /admin_panel/settings/save/ HTTP/1.1" 302 0
+INFO 2025-05-14 15:30:41,968 basehttp "GET /admin_panel/settings/ HTTP/1.1" 200 17753
+INFO 2025-05-14 15:30:54,423 basehttp "GET / HTTP/1.1" 200 35127
+WARNING 2025-05-14 15:32:13,663 log Not Found: /task-status/6/
+WARNING 2025-05-14 15:32:13,754 log Not Found: /task-status/5/
+WARNING 2025-05-14 15:32:13,754 basehttp "GET /task-status/6/ HTTP/1.1" 404 8155
+WARNING 2025-05-14 15:32:13,846 log Not Found: /task-status/2/
+WARNING 2025-05-14 15:32:13,846 basehttp "GET /task-status/5/ HTTP/1.1" 404 8155
+WARNING 2025-05-14 15:32:13,862 basehttp "GET /task-status/2/ HTTP/1.1" 404 8155
+WARNING 2025-05-14 15:32:18,573 log Not Found: /task-status/5/
+WARNING 2025-05-14 15:32:18,589 log Not Found: /task-status/6/
+WARNING 2025-05-14 15:32:18,632 basehttp "GET /task-status/5/ HTTP/1.1" 404 8155
+WARNING 2025-05-14 15:32:18,679 log Not Found: /task-status/2/
+WARNING 2025-05-14 15:32:18,797 basehttp "GET /task-status/6/ HTTP/1.1" 404 8155
+WARNING 2025-05-14 15:32:18,831 log Not Found: /task-status/1/
+WARNING 2025-05-14 15:32:18,838 basehttp "GET /task-status/2/ HTTP/1.1" 404 8155
+WARNING 2025-05-14 15:32:18,846 basehttp "GET /task-status/1/ HTTP/1.1" 404 8155
+WARNING 2025-05-14 15:32:23,867 log Not Found: /task-status/6/
+WARNING 2025-05-14 15:32:23,899 log Not Found: /task-status/5/
+WARNING 2025-05-14 15:32:23,945 log Not Found: /task-status/1/
+WARNING 2025-05-14 15:32:23,977 log Not Found: /task-status/2/
+WARNING 2025-05-14 15:32:24,127 basehttp "GET /task-status/6/ HTTP/1.1" 404 8155
+WARNING 2025-05-14 15:32:24,154 basehttp "GET /task-status/5/ HTTP/1.1" 404 8155
+WARNING 2025-05-14 15:32:24,279 basehttp "GET /task-status/1/ HTTP/1.1" 404 8155
+WARNING 2025-05-14 15:32:24,297 basehttp "GET /task-status/2/ HTTP/1.1" 404 8155
+WARNING 2025-05-14 15:32:28,549 log Not Found: /task-status/5/
+WARNING 2025-05-14 15:32:28,580 log Not Found: /task-status/6/
+WARNING 2025-05-14 15:32:28,646 log Not Found: /task-status/2/
+WARNING 2025-05-14 15:32:28,661 basehttp "GET /task-status/5/ HTTP/1.1" 404 8155
+WARNING 2025-05-14 15:32:28,773 log Not Found: /task-status/1/
+WARNING 2025-05-14 15:32:28,795 basehttp "GET /task-status/6/ HTTP/1.1" 404 8155
+WARNING 2025-05-14 15:32:28,795 basehttp "GET /task-status/2/ HTTP/1.1" 404 8155
+WARNING 2025-05-14 15:32:28,823 basehttp "GET /task-status/1/ HTTP/1.1" 404 8155
+INFO 2025-05-14 15:34:52,659 basehttp "GET / HTTP/1.1" 200 35334
+INFO 2025-05-14 15:34:56,814 basehttp "GET / HTTP/1.1" 200 35334
+INFO 2025-05-14 15:36:10,402 basehttp "GET / HTTP/1.1" 200 35493
+INFO 2025-05-14 15:37:36,281 basehttp "GET / HTTP/1.1" 200 35209
+WARNING 2025-05-14 15:37:40,905 log Not Found: /favicon.ico
+WARNING 2025-05-14 15:37:40,910 basehttp "GET /favicon.ico HTTP/1.1" 404 8146
+INFO 2025-05-14 16:04:10,343 basehttp "GET / HTTP/1.1" 200 38297
+INFO 2025-05-14 16:04:59,021 basehttp "GET / HTTP/1.1" 200 38297
+INFO 2025-05-14 16:07:31,913 basehttp "GET / HTTP/1.1" 200 38483
+INFO 2025-05-14 16:08:30,130 basehttp "GET / HTTP/1.1" 200 38546
+INFO 2025-05-14 16:09:27,061 basehttp "GET / HTTP/1.1" 200 38460
+INFO 2025-05-14 16:10:24,047 basehttp "GET / HTTP/1.1" 200 38345
+INFO 2025-05-15 17:24:48,597 autoreload Watching for file changes with StatReloader
+WARNING 2025-05-15 17:25:16,622 log Not Found: /admin-panel/
+WARNING 2025-05-15 17:25:16,632 basehttp "GET /admin-panel/ HTTP/1.1" 404 8149
+WARNING 2025-05-15 17:25:42,834 log Not Found: /admin_panel/
+WARNING 2025-05-15 17:25:42,982 basehttp "GET /admin_panel/ HTTP/1.1" 404 16918
+WARNING 2025-05-15 17:25:48,682 log Not Found: /admin_panel/login
+WARNING 2025-05-15 17:25:48,688 basehttp "GET /admin_panel/login HTTP/1.1" 404 16933
+INFO 2025-05-15 17:25:59,446 basehttp "GET /admin_panel/dashboard HTTP/1.1" 301 0
+INFO 2025-05-15 17:25:59,920 basehttp "GET /admin_panel/dashboard/ HTTP/1.1" 302 0
+INFO 2025-05-15 17:26:00,896 basehttp "GET /admin/login/?next=/admin_panel/dashboard/ HTTP/1.1" 200 4205
+INFO 2025-05-15 17:26:01,456 basehttp "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-05-15 17:26:02,062 basehttp "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-05-15 17:26:02,201 basehttp "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-05-15 17:26:02,273 basehttp "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-05-15 17:26:02,557 basehttp "GET /static/admin/css/login.css HTTP/1.1" 304 0
+INFO 2025-05-15 17:26:02,719 basehttp "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-05-15 17:26:02,747 basehttp "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-05-15 17:26:19,870 basehttp "POST /admin/login/?next=/admin_panel/dashboard/ HTTP/1.1" 302 0
+INFO 2025-05-15 17:26:22,570 basehttp "GET /admin_panel/dashboard/ HTTP/1.1" 200 39407
+INFO 2025-05-15 17:26:41,648 basehttp "GET / HTTP/1.1" 200 38345
+INFO 2025-05-15 17:27:09,135 basehttp "GET /dashboard/ HTTP/1.1" 200 33389
+INFO 2025-05-15 17:32:35,337 basehttp "GET / HTTP/1.1" 200 38345
+INFO 2025-05-15 17:33:11,590 basehttp "GET /services/ HTTP/1.1" 200 66502
+INFO 2025-05-15 17:34:08,579 basehttp "GET /services/?category=%F0%9F%91%A5%20TikTok%20Followers%20{%20Country%20Targeted%20} HTTP/1.1" 200 50304
+INFO 2025-05-15 17:34:43,055 basehttp "GET /services/?category=%F0%9F%93%A6%20Tiktok%20Services%20{%20BestBuy%20} HTTP/1.1" 200 57440
+INFO 2025-05-15 17:35:35,159 basehttp "GET /services/?category=%F0%9F%86%93%20Free%20Services%20{%20%E2%9D%A4%EF%B8%8F%20Likes,%20%F0%9F%91%80views%20} HTTP/1.1" 200 45767
+INFO 2025-05-15 17:35:49,449 basehttp "POST /order/create/ HTTP/1.1" 302 0
+INFO 2025-05-15 17:35:50,320 basehttp "GET /service/4/ HTTP/1.1" 200 27670
+INFO 2025-05-15 17:39:28,506 basehttp "GET /service/4/ HTTP/1.1" 200 26980
+INFO 2025-05-15 17:39:31,334 basehttp "GET /dashboard/ HTTP/1.1" 200 33389
+INFO 2025-05-15 17:46:27,493 basehttp "GET / HTTP/1.1" 200 42677
+WARNING 2025-05-15 23:02:58,670 log Not Found: /build/assets/index-Chjiymov.js
+WARNING 2025-05-15 23:02:58,686 log Not Found: /build/assets/EditorTabsAceEditor-4lSEOsSv.js
+WARNING 2025-05-15 23:02:58,753 log Not Found: /build/assets/usePage-DrIrcF-z.js
+WARNING 2025-05-15 23:02:58,949 log Not Found: /build/assets/EditorTabsAceEditor-4lSEOsSv.js
+WARNING 2025-05-15 23:02:59,084 basehttp "GET /build/assets/index-Chjiymov.js HTTP/1.1" 404 8203
+WARNING 2025-05-15 23:02:59,169 log Not Found: /build/assets/_commonjsHelpers-D6-XlEtG.js
+WARNING 2025-05-15 23:02:59,551 log Not Found: /build/assets/index-Chjiymov.js
+WARNING 2025-05-15 23:02:59,553 basehttp "GET /build/assets/EditorTabsAceEditor-4lSEOsSv.js HTTP/1.1" 404 8245
+WARNING 2025-05-15 23:02:59,554 log Not Found: /build/assets/usePage-DrIrcF-z.js
+WARNING 2025-05-15 23:02:59,817 log Not Found: /build/assets/_commonjsHelpers-D6-XlEtG.js
+WARNING 2025-05-15 23:02:59,823 basehttp "GET /build/assets/usePage-DrIrcF-z.js HTTP/1.1" 404 8209
+INFO 2025-05-15 23:02:59,941 basehttp - Broken pipe from ('127.0.0.1', 52970)
+WARNING 2025-05-15 23:03:00,539 basehttp "GET /build/assets/_commonjsHelpers-D6-XlEtG.js HTTP/1.1" 404 8236
+INFO 2025-05-15 23:03:00,762 basehttp - Broken pipe from ('127.0.0.1', 52973)
+INFO 2025-05-15 23:03:01,339 basehttp - Broken pipe from ('127.0.0.1', 52971)
+INFO 2025-05-15 23:03:01,887 basehttp - Broken pipe from ('127.0.0.1', 52972)
+WARNING 2025-05-15 23:04:27,079 log Not Found: /build/assets/EditorTabsAceEditor-4lSEOsSv.js
+WARNING 2025-05-15 23:04:27,589 log Not Found: /build/assets/usePage-DrIrcF-z.js
+INFO 2025-05-15 23:04:27,629 basehttp - Broken pipe from ('127.0.0.1', 53031)
+INFO 2025-05-15 23:04:27,731 basehttp - Broken pipe from ('127.0.0.1', 53032)
+WARNING 2025-05-15 23:04:28,047 log Not Found: /build/assets/_commonjsHelpers-D6-XlEtG.js
+WARNING 2025-05-15 23:04:28,322 log Not Found: /build/assets/index-Chjiymov.js
+WARNING 2025-05-15 23:04:28,724 log Not Found: /build/assets/usePage-DrIrcF-z.js
+INFO 2025-05-15 23:04:28,851 basehttp - Broken pipe from ('127.0.0.1', 53033)
+INFO 2025-05-15 23:04:28,879 basehttp - Broken pipe from ('127.0.0.1', 53034)
+WARNING 2025-05-15 23:04:28,903 basehttp "GET /build/assets/usePage-DrIrcF-z.js HTTP/1.1" 404 8209
+WARNING 2025-05-15 23:04:29,280 log Not Found: /build/assets/EditorTabsAceEditor-4lSEOsSv.js
+WARNING 2025-05-15 23:04:29,928 log Not Found: /build/assets/index-Chjiymov.js
+WARNING 2025-05-15 23:04:30,062 log Not Found: /build/assets/_commonjsHelpers-D6-XlEtG.js
+WARNING 2025-05-15 23:04:31,244 basehttp "GET /build/assets/index-Chjiymov.js HTTP/1.1" 404 8203
+WARNING 2025-05-15 23:04:33,186 basehttp "GET /build/assets/EditorTabsAceEditor-4lSEOsSv.js HTTP/1.1" 404 8245
+WARNING 2025-05-15 23:04:35,141 basehttp "GET /build/assets/_commonjsHelpers-D6-XlEtG.js HTTP/1.1" 404 8236
+WARNING 2025-05-15 23:04:59,411 log Not Found: /build/assets/EditorTabsAceEditor-4lSEOsSv.js
+WARNING 2025-05-15 23:04:59,994 log Not Found: /build/assets/EditorTabsAceEditor-4lSEOsSv.js
+INFO 2025-05-15 23:05:00,055 basehttp - Broken pipe from ('127.0.0.1', 53061)
+WARNING 2025-05-15 23:05:01,259 basehttp "GET /build/assets/EditorTabsAceEditor-4lSEOsSv.js HTTP/1.1" 404 8245
+WARNING 2025-05-15 23:05:01,718 log Not Found: /build/assets/usePage-DrIrcF-z.js
+WARNING 2025-05-15 23:05:03,463 log Not Found: /build/assets/index-Chjiymov.js
+INFO 2025-05-15 23:05:03,772 basehttp - Broken pipe from ('127.0.0.1', 53064)
+INFO 2025-05-15 23:05:05,689 basehttp - Broken pipe from ('127.0.0.1', 53065)
+WARNING 2025-05-15 23:05:05,696 log Not Found: /build/assets/_commonjsHelpers-D6-XlEtG.js
+WARNING 2025-05-15 23:05:08,241 log Not Found: /build/assets/usePage-DrIrcF-z.js
+WARNING 2025-05-15 23:05:10,465 log Not Found: /build/assets/_commonjsHelpers-D6-XlEtG.js
+INFO 2025-05-15 23:05:12,332 basehttp - Broken pipe from ('127.0.0.1', 53066)
+WARNING 2025-05-15 23:05:12,335 basehttp "GET /build/assets/usePage-DrIrcF-z.js HTTP/1.1" 404 8209
+WARNING 2025-05-15 23:05:12,382 basehttp "GET /build/assets/_commonjsHelpers-D6-XlEtG.js HTTP/1.1" 404 8236
+WARNING 2025-05-15 23:05:15,538 log Not Found: /build/assets/index-Chjiymov.js
+WARNING 2025-05-15 23:05:16,926 basehttp "GET /build/assets/index-Chjiymov.js HTTP/1.1" 404 8203
+INFO 2025-05-15 23:22:42,709 basehttp "GET / HTTP/1.1" 200 45938
+INFO 2025-05-15 23:23:22,977 basehttp "GET / HTTP/1.1" 200 43339
+INFO 2025-05-15 23:33:05,192 basehttp "GET / HTTP/1.1" 200 43339
+INFO 2025-05-15 23:33:18,453 basehttp "GET /dashboard/ HTTP/1.1" 200 30715
+INFO 2025-05-15 23:33:48,295 basehttp "GET /dashboard/ HTTP/1.1" 200 30715
+INFO 2025-05-15 23:34:03,061 basehttp "GET /services/ HTTP/1.1" 200 68176
+INFO 2025-05-15 23:37:14,335 basehttp "GET /dashboard/ HTTP/1.1" 200 30715
+INFO 2025-05-15 23:37:30,999 basehttp "GET /order/status/ HTTP/1.1" 200 27875
+INFO 2025-05-15 23:37:36,287 basehttp "GET /services/ HTTP/1.1" 200 68176
+INFO 2025-05-15 23:37:49,089 basehttp "GET /services/?category=%F0%9F%86%93%20Free%20Services%20{%20%E2%9D%A4%EF%B8%8F%20Likes,%20%F0%9F%91%80views%20} HTTP/1.1" 200 47441
+INFO 2025-05-15 23:38:01,883 basehttp "POST /order/create/ HTTP/1.1" 302 0
+INFO 2025-05-15 23:38:03,042 basehttp "GET /service/4/ HTTP/1.1" 200 29489
+INFO 2025-05-15 23:38:31,381 views Order calculation - Service: ❤️ Free Tikok post likes, Rate: 18.00, Quantity: 100, Charge: 1.80
+INFO 2025-05-15 23:38:31,435 views Order attempt - User: admin, Balance: 499.22, Charge: 1.80
+INFO 2025-05-15 23:38:32,033 api_client Making API request: {'key': '5a341350ae6fc1e7491a1c594e34e113', 'action': 'add', 'service': 1367, 'link': 'https://vm.tiktok.com/ZMSef9J5G/', 'quantity': 100}
+INFO 2025-05-15 23:38:34,602 api_client API response: {'order': 17671117}
+INFO 2025-05-15 23:38:34,607 views API response for order #9: {'order': 17671117}
+INFO 2025-05-15 23:38:34,816 basehttp "POST /order/create/ HTTP/1.1" 302 0
+INFO 2025-05-15 23:38:35,477 basehttp "GET /order/confirmation/9/ HTTP/1.1" 200 25198
+INFO 2025-05-15 23:38:42,211 basehttp "GET /dashboard/ HTTP/1.1" 200 30715
+INFO 2025-05-15 23:44:40,169 basehttp "GET /dashboard/ HTTP/1.1" 200 34258
+INFO 2025-05-15 23:46:18,537 basehttp "GET /dashboard/ HTTP/1.1" 200 36015
+INFO 2025-05-15 23:50:00,894 basehttp "GET /services/ HTTP/1.1" 200 93170
+INFO 2025-05-15 23:50:41,209 basehttp "GET /services/?category=%F0%9F%86%93%20Free%20Services%20{%20%E2%9D%A4%EF%B8%8F%20Likes,%20%F0%9F%91%80views%20} HTTP/1.1" 200 58115
+INFO 2025-05-15 23:51:28,106 basehttp "GET /services/?category=%F0%9F%86%93%20Free%20Services%20{%20%E2%9D%A4%EF%B8%8F%20Likes,%20%F0%9F%91%80views%20} HTTP/1.1" 200 58115
+INFO 2025-05-15 23:51:38,353 basehttp "GET /services/?category=100%%20Free%20Services%20{%20Max%20:%20200K%20} HTTP/1.1" 200 54916
+INFO 2025-05-15 23:51:53,375 basehttp "GET /register/ HTTP/1.1" 200 23665
+INFO 2025-05-15 23:52:06,935 basehttp "GET /services/?category=100%%20Free%20Services%20{%20Max%20:%20200K%20} HTTP/1.1" 200 54916
+INFO 2025-05-15 23:52:45,270 basehttp "GET /order/status/ HTTP/1.1" 200 28781
+INFO 2025-05-17 02:10:42,324 autoreload Watching for file changes with StatReloader
+INFO 2025-05-17 02:11:36,250 basehttp "GET / HTTP/1.1" 200 43245
+INFO 2025-05-17 02:11:56,652 basehttp "GET /login/ HTTP/1.1" 200 21207
+INFO 2025-05-17 02:12:10,913 basehttp - Broken pipe from ('127.0.0.1', 61893)
+INFO 2025-05-17 02:12:19,397 basehttp "POST /login/ HTTP/1.1" 302 0
+WARNING 2025-05-17 02:12:19,572 log Not Found: /accounts/profile/
+WARNING 2025-05-17 02:12:19,572 basehttp "GET /accounts/profile/ HTTP/1.1" 404 8164
+INFO 2025-05-17 02:12:43,870 basehttp "GET /profile/ HTTP/1.1" 200 25920
+INFO 2025-05-17 02:12:49,657 basehttp "GET /dashboard/ HTTP/1.1" 200 36015
+INFO 2025-05-17 02:12:59,974 basehttp "GET /services/ HTTP/1.1" 200 93478
+INFO 2025-05-17 02:13:07,408 basehttp "GET /order/status/ HTTP/1.1" 200 28781
+INFO 2025-05-17 02:30:46,124 basehttp "GET /order/status/ HTTP/1.1" 200 31058
+INFO 2025-05-17 02:31:00,206 basehttp "GET /order/status/ HTTP/1.1" 200 31058
+WARNING 2025-05-17 02:31:15,428 log Not Found: /order/
+WARNING 2025-05-17 02:31:15,436 basehttp "GET /order/ HTTP/1.1" 404 8131
+WARNING 2025-05-17 02:31:26,904 log Not Found: /place-order
+WARNING 2025-05-17 02:31:26,919 basehttp "GET /place-order HTTP/1.1" 404 8146
+INFO 2025-05-17 02:31:35,822 basehttp "GET /dashboard/ HTTP/1.1" 200 36015
+INFO 2025-05-17 02:31:42,513 basehttp "GET /services/ HTTP/1.1" 200 93478
+INFO 2025-05-17 02:31:46,610 basehttp "GET /order/status/ HTTP/1.1" 200 31058
+INFO 2025-05-17 02:31:52,838 api_client Making API request: {'key': '5a341350ae6fc1e7491a1c594e34e113', 'action': 'status', 'order': '17671117'}
+INFO 2025-05-17 02:31:54,177 api_client API response: {'charge': '4.00', 'start_count': '30', 'status': 'Completed', 'remains': '0', 'currency': 'NGN'}
+INFO 2025-05-17 02:31:55,633 basehttp "GET /order/status/9/ HTTP/1.1" 200 21427
+INFO 2025-05-17 02:32:03,828 basehttp "GET /service/4/ HTTP/1.1" 200 27186
+INFO 2025-05-17 02:32:20,551 basehttp "GET /add-funds/ HTTP/1.1" 200 25635
+INFO 2025-05-17 02:44:10,541 basehttp "GET /add-funds/ HTTP/1.1" 200 24611
+INFO 2025-05-17 02:44:25,714 basehttp "POST /process-payment/ HTTP/1.1" 302 0
+INFO 2025-05-17 02:45:02,226 basehttp "GET /dashboard/ HTTP/1.1" 200 36017
+INFO 2025-05-17 02:46:43,993 basehttp "GET /dashboard/ HTTP/1.1" 200 36025
+INFO 2025-05-17 02:46:48,506 basehttp "GET /profile/ HTTP/1.1" 200 25920
+INFO 2025-05-17 02:58:40,685 basehttp "GET / HTTP/1.1" 200 43245
+WARNING 2025-05-17 02:59:44,144 log Not Found: /favicon.ico
+WARNING 2025-05-17 02:59:49,027 basehttp "GET /favicon.ico HTTP/1.1" 404 8146
+INFO 2025-05-17 03:00:08,680 basehttp "GET /register/ HTTP/1.1" 200 24041
+INFO 2025-05-17 03:01:58,451 basehttp "GET /login/ HTTP/1.1" 200 21999
+ERROR 2025-05-17 03:02:10,803 log Internal Server Error: /password-reset/
+Traceback (most recent call last):
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\template\loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: password_reset.html
+ERROR 2025-05-17 03:02:11,299 basehttp "GET /password-reset/ HTTP/1.1" 500 83210
+INFO 2025-05-17 03:02:19,058 basehttp "GET /login/ HTTP/1.1" 200 21999
+INFO 2025-05-17 03:03:11,231 basehttp "GET /profile/ HTTP/1.1" 200 25391
+INFO 2025-05-17 03:03:54,468 basehttp "GET /dashboard/ HTTP/1.1" 200 36025
+INFO 2025-05-17 03:04:13,335 basehttp "GET /services/ HTTP/1.1" 200 93486
+INFO 2025-05-17 03:04:19,379 basehttp "GET /add-funds/ HTTP/1.1" 200 24619
+INFO 2025-05-17 03:04:24,445 basehttp "GET /profile/ HTTP/1.1" 200 25391
+INFO 2025-05-17 03:06:55,395 autoreload C:\Users\kpoje\Desktop\pysmart\engage\socialboost\core\forms.py changed, reloading.
+INFO 2025-05-17 03:07:24,633 autoreload Watching for file changes with StatReloader
+INFO 2025-05-17 03:08:18,770 autoreload C:\Users\kpoje\Desktop\pysmart\engage\socialboost\core\forms.py changed, reloading.
+INFO 2025-05-17 03:09:20,168 autoreload Watching for file changes with StatReloader
+INFO 2025-05-17 03:09:51,698 basehttp "GET /login/ HTTP/1.1" 200 22030
+INFO 2025-05-17 03:10:02,279 basehttp "GET /login/ HTTP/1.1" 200 22030
+INFO 2025-05-17 03:10:06,280 basehttp "GET /register/ HTTP/1.1" 200 24865
+INFO 2025-05-17 03:16:54,418 autoreload C:\Users\kpoje\Desktop\pysmart\engage\socialboost\core\forms.py changed, reloading.
+INFO 2025-05-17 03:18:09,486 autoreload Watching for file changes with StatReloader
+INFO 2025-05-17 03:18:28,376 basehttp "GET /register/ HTTP/1.1" 200 29639
+INFO 2025-05-17 03:18:47,524 basehttp "GET /login/ HTTP/1.1" 200 27059
+INFO 2025-05-17 03:19:54,821 basehttp "GET /login/ HTTP/1.1" 200 27059
+INFO 2025-05-17 03:20:23,121 basehttp "GET /register/ HTTP/1.1" 200 29639
+INFO 2025-05-17 03:20:49,360 basehttp "GET /login/ HTTP/1.1" 200 27059
+INFO 2025-05-17 03:23:10,115 basehttp "GET /login/ HTTP/1.1" 200 27561
+INFO 2025-05-17 03:25:58,796 basehttp "GET /admin_panel/dashboard/ HTTP/1.1" 200 40497
+INFO 2025-05-17 03:26:11,992 basehttp "GET /admin_panel/dashboard/ HTTP/1.1" 200 40497
+INFO 2025-05-17 03:26:28,793 basehttp "GET /admin_panel/users/ HTTP/1.1" 200 30750
+INFO 2025-05-17 03:26:36,111 basehttp "GET /admin_panel/services/ HTTP/1.1" 200 128091
+INFO 2025-05-17 03:26:48,087 basehttp "GET /admin_panel/transactions/ HTTP/1.1" 200 31875
+INFO 2025-05-17 03:26:53,158 basehttp "GET /admin_panel/settings/ HTTP/1.1" 200 17234
+INFO 2025-05-17 03:26:59,470 api_client Making API request: {'key': '5a341350ae6fc1e7491a1c594e34e113', 'action': 'balance'}
+INFO 2025-05-17 03:27:00,665 api_client API response: {'balance': '545.5000000', 'currency': 'NGN'}
+INFO 2025-05-17 03:27:00,966 basehttp "GET /admin_panel/api/check-balance/ HTTP/1.1" 200 15021
+INFO 2025-05-17 03:27:22,887 basehttp "GET /admin_panel/provider/payment/ HTTP/1.1" 200 15270
+INFO 2025-05-17 03:27:33,816 basehttp "GET /admin_panel/dashboard/ HTTP/1.1" 200 40497
+INFO 2025-05-17 03:36:04,363 basehttp "GET /login/ HTTP/1.1" 200 28907
+INFO 2025-05-17 03:53:45,874 autoreload C:\Users\kpoje\Desktop\pysmart\engage\socialboost\core\urls.py changed, reloading.
+INFO 2025-05-17 03:54:43,702 autoreload Watching for file changes with StatReloader
+INFO 2025-05-17 03:55:32,746 autoreload C:\Users\kpoje\Desktop\pysmart\engage\socialboost\socialboost\settings.py changed, reloading.
+INFO 2025-05-17 03:55:45,778 autoreload Watching for file changes with StatReloader
+INFO 2025-05-17 03:56:17,691 basehttp "GET /login/ HTTP/1.1" 200 28907
+INFO 2025-05-17 03:56:30,706 basehttp "GET /password-reset/ HTTP/1.1" 200 19856
+INFO 2025-05-17 03:56:38,116 basehttp "POST /password-reset/ HTTP/1.1" 302 0
+INFO 2025-05-17 03:56:38,452 basehttp "GET /password-reset/done/ HTTP/1.1" 200 19340
+INFO 2025-05-17 03:57:15,394 basehttp "GET /admin_panel/users/ HTTP/1.1" 200 30750
+INFO 2025-05-17 03:57:35,464 basehttp "GET /login/ HTTP/1.1" 200 28907
+INFO 2025-05-17 03:57:47,504 basehttp "GET /register/ HTTP/1.1" 200 29639
+INFO 2025-05-17 03:58:05,674 basehttp "GET /login/ HTTP/1.1" 200 28907
+INFO 2025-05-17 03:58:15,335 basehttp "GET /password-reset/ HTTP/1.1" 200 19856
+INFO 2025-05-17 03:58:24,081 basehttp "POST /password-reset/ HTTP/1.1" 302 0
+INFO 2025-05-17 03:58:24,181 basehttp "GET /password-reset/done/ HTTP/1.1" 200 19340
+INFO 2025-05-17 03:58:43,245 basehttp "GET /password-reset-confirm/Mg/cpxhpb-9b8b80444416f67367fd12103b968b35/ HTTP/1.1" 302 0
+ERROR 2025-05-17 03:58:47,240 log Internal Server Error: /password-reset-confirm/Mg/set-password/
+Traceback (most recent call last):
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\template\loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: password_reset_confirm.html
+ERROR 2025-05-17 03:58:47,372 basehttp "GET /password-reset-confirm/Mg/set-password/ HTTP/1.1" 500 83635
+ERROR 2025-05-17 03:59:24,569 log Internal Server Error: /password-reset-confirm/Mg/set-password/
+Traceback (most recent call last):
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\template\loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: password_reset_confirm.html
+ERROR 2025-05-17 03:59:24,719 basehttp "GET /password-reset-confirm/Mg/set-password/ HTTP/1.1" 500 83772
+ERROR 2025-05-17 03:59:34,886 log Internal Server Error: /password-reset-confirm/Mg/set-password/
+Traceback (most recent call last):
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\template\loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: password_reset_confirm.html
+ERROR 2025-05-17 03:59:35,315 basehttp "GET /password-reset-confirm/Mg/set-password/ HTTP/1.1" 500 83772
+INFO 2025-05-17 04:00:04,543 basehttp "GET /password-reset/done/ HTTP/1.1" 200 19340
+INFO 2025-05-17 04:00:09,467 basehttp "GET /password-reset-confirm/Mg/cpxhpb-9b8b80444416f67367fd12103b968b35/ HTTP/1.1" 302 0
+ERROR 2025-05-17 04:00:12,157 log Internal Server Error: /password-reset-confirm/Mg/set-password/
+Traceback (most recent call last):
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\template\loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: password_reset_confirm.html
+ERROR 2025-05-17 04:00:12,464 basehttp "GET /password-reset-confirm/Mg/set-password/ HTTP/1.1" 500 83635
+INFO 2025-05-17 04:08:27,057 autoreload C:\Users\kpoje\Desktop\pysmart\engage\socialboost\core\urls.py changed, reloading.
+INFO 2025-05-17 04:09:54,746 autoreload Watching for file changes with StatReloader
+INFO 2025-05-17 04:10:35,095 autoreload C:\Users\kpoje\Desktop\pysmart\engage\socialboost\socialboost\settings.py changed, reloading.
+INFO 2025-05-17 04:10:53,269 autoreload Watching for file changes with StatReloader
+INFO 2025-05-17 04:11:08,891 autoreload C:\Users\kpoje\Desktop\pysmart\engage\socialboost\core\urls.py changed, reloading.
+INFO 2025-05-17 04:11:45,784 autoreload Watching for file changes with StatReloader
+INFO 2025-05-17 04:12:14,984 basehttp "GET /password-reset-confirm/Mg/set-password/ HTTP/1.1" 200 4529
+INFO 2025-05-17 04:12:15,242 basehttp "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-05-17 04:12:15,411 basehttp "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-05-17 04:12:15,442 basehttp "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-05-17 04:12:15,644 basehttp "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-05-17 04:12:18,320 basehttp "GET /static/admin/css/forms.css HTTP/1.1" 200 8525
+INFO 2025-05-17 04:12:18,744 basehttp "GET /static/admin/css/widgets.css HTTP/1.1" 200 11991
+INFO 2025-05-17 04:13:15,262 basehttp "GET /password-reset/ HTTP/1.1" 200 19856
+ERROR 2025-05-17 04:13:47,734 forms Failed to send password reset email to 2
+Traceback (most recent call last):
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\contrib\auth\forms.py", line 434, in send_mail
+    email_message.send()
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\core\mail\message.py", line 307, in send
+    return self.get_connection(fail_silently).send_messages([self])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 128, in send_messages
+    new_conn_created = self.open()
+                       ^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\pysmart\engage\venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 86, in open
+    self.connection = self.connection_class(
+                      ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\smtplib.py", line 255, in __init__
+    (code, msg) = self.connect(host, port)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\smtplib.py", line 341, in connect
+    self.sock = self._get_socket(host, port, self.timeout)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\smtplib.py", line 312, in _get_socket
+    return socket.create_connection((host, port), timeout,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 829, in create_connection
+    for res in getaddrinfo(host, port, 0, SOCK_STREAM):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 964, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+INFO 2025-05-17 04:13:48,771 basehttp "POST /password-reset/ HTTP/1.1" 302 0
+INFO 2025-05-17 04:13:49,363 basehttp "GET /password-reset/done/ HTTP/1.1" 200 3638
+INFO 2025-05-17 04:15:07,926 autoreload C:\Users\kpoje\Desktop\pysmart\engage\socialboost\socialboost\settings.py changed, reloading.
+INFO 2025-05-17 04:15:20,653 autoreload Watching for file changes with StatReloader

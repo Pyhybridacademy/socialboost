@@ -1,214 +1,228 @@
-{% extends 'base.html' %}
-
-{% block title %}Dashboard - SocialBoost{% endblock %}
-
+{% extends 'dash_base.html' %}
+{% block title %}Dashboard - {{ site_settings.site_name }}{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
 {% block content %}
 <!-- Dashboard Header -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-8">
-                <h1 class="fw-bold mb-2">Dashboard</h1>
-                <p class="lead mb-0">Welcome back, {{ user.first_name|default:user.username }}!</p>
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 animate-fade-in">
+    <div class="w-full md:w-auto mb-4 md:mb-0">
+        <h2 class="text-xl md:text-2xl font-display font-bold text-gray-800 mb-1">Welcome back, {{ user.first_name|default:user.username }}!</h2>
+        <p class="text-gray-600">Here's what's happening with your account today</p>
+    </div>
+    <div class="w-full md:w-auto flex items-center bg-white p-3 rounded-lg shadow-sm">
+        <div class="mr-4 md:mr-6 text-right">
+            <p class="text-sm text-gray-500">Your Balance</p>
+            <p class="text-lg md:text-xl font-bold text-primary-600">₦{{ user_balance.balance|floatformat:2 }}</p>
+        </div>
+        <a href="{% url 'add_funds' %}" class="px-3 py-2 md:px-4 md:py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-lg hover:from-primary-600 hover:to-secondary-600 transition-all duration-300 text-sm md:text-base">
+            Add Funds
+        </a>
+    </div>
+</div>
+
+<!-- Stats Cards -->
+<div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-6 md:mb-8">
+    <div class="stat-card bg-white p-4 md:p-6 rounded-xl shadow-sm animate-slide-up">
+        <div class="flex items-center">
+            <div class="p-2 md:p-3 rounded-lg bg-primary-50 text-primary-500 mr-3 md:mr-4">
+                <i class="fas fa-shopping-cart text-sm md:text-base"></i>
             </div>
-            <div class="col-md-4 text-md-end mt-3 mt-md-0">
-                <div class="d-flex justify-content-md-end">
-                    <div class="me-3">
-                        <span class="d-block text-muted small">Your Balance</span>
-                        <span class="fw-bold text-primary fs-4">₦{{ user_balance.balance|floatformat:2 }}</span>
-                    </div>
-                    <a href="{% url 'add_funds' %}" class="btn btn-primary align-self-center">Add Funds</a>
-                </div>
+            <div>
+                <p class="text-xs md:text-sm text-gray-500">Total Orders</p>
+                <h3 class="text-lg md:text-2xl font-bold text-gray-800">{{ total_orders }}</h3>
             </div>
         </div>
     </div>
-</section>
-
-<!-- Dashboard Content -->
-<section class="py-5">
-    <div class="container">
-        <!-- Stats Cards -->
-        <div class="row g-4 mb-5">
-            <div class="col-md-3">
-                <div class="card h-100 dashboard-stat stat-primary text-center">
-                    <div class="card-body">
-                        <i class="fas fa-shopping-cart"></i>
-                        <h3 class="fw-bold">{{ total_orders }}</h3>
-                        <p class="mb-0">Total Orders</p>
-                    </div>
-                </div>
+    
+    <div class="stat-card bg-white p-4 md:p-6 rounded-xl shadow-sm animate-slide-up" style="animation-delay: 0.1s;">
+        <div class="flex items-center">
+            <div class="p-2 md:p-3 rounded-lg bg-green-50 text-green-500 mr-3 md:mr-4">
+                <i class="fas fa-check-circle text-sm md:text-base"></i>
             </div>
-            <div class="col-md-3">
-                <div class="card h-100 dashboard-stat stat-success text-center">
-                    <div class="card-body">
-                        <i class="fas fa-check-circle"></i>
-                        <h3 class="fw-bold">{{ completed_orders }}</h3>
-                        <p class="mb-0">Completed Orders</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card h-100 dashboard-stat stat-info text-center">
-                    <div class="card-body">
-                        <i class="fas fa-spinner"></i>
-                        <h3 class="fw-bold">{{ processing_orders }}</h3>
-                        <p class="mb-0">Processing Orders</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card h-100 dashboard-stat stat-warning text-center">
-                    <div class="card-body">
-                        <i class="fas fa-clock"></i>
-                        <h3 class="fw-bold">{{ pending_orders }}</h3>
-                        <p class="mb-0">Pending Orders</p>
-                    </div>
-                </div>
+            <div>
+                <p class="text-xs md:text-sm text-gray-500">Completed</p>
+                <h3 class="text-lg md:text-2xl font-bold text-gray-800">{{ completed_orders }}</h3>
             </div>
         </div>
-
-        <div class="row g-4">
-            <!-- Recent Orders -->
-            <div class="col-lg-7">
-                <div class="card h-100">
-                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Recent Orders</h5>
-                        <a href="{% url 'order_status' %}" class="btn btn-sm btn-outline-primary">View All</a>
-                    </div>
-                    <div class="card-body">
-                        {% if recent_orders %}
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Order ID</th>
-                                            <th>Service</th>
-                                            <th>Date</th>
-                                            <th>Status</th>
-                                            <th>Price</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for order in recent_orders %}
-                                            <tr>
-                                                <td>
-                                                    <a href="{% url 'order_status' order_id=order.id %}" class="text-decoration-none">
-                                                        #{{ order.id }}
-                                                    </a>
-                                                </td>
-                                                <td>{{ order.service.name|truncatechars:20 }}</td>
-                                                <td>{{ order.created_at|date:"M d, Y" }}</td>
-                                                <td>
-                                                    {% if order.status == 'pending' %}
-                                                        <span class="badge bg-warning">Pending</span>
-                                                    {% elif order.status == 'processing' %}
-                                                        <span class="badge bg-info">Processing</span>
-                                                    {% elif order.status == 'completed' %}
-                                                        <span class="badge bg-success">Completed</span>
-                                                    {% elif order.status == 'canceled' %}
-                                                        <span class="badge bg-secondary">Canceled</span>
-                                                    {% elif order.status == 'error' %}
-                                                        <span class="badge bg-danger">Error</span>
-                                                    {% else %}
-                                                        <span class="badge bg-secondary">{{ order.status }}</span>
-                                                    {% endif %}
-                                                </td>
-                                                <td>₦{{ order.charge|floatformat:2 }}</td>
-                                            </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        {% else %}
-                            <div class="text-center py-4">
-                                <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
-                                <h5>No orders yet</h5>
-                                <p>You haven't placed any orders yet.</p>
-                                <a href="{% url 'services' %}" class="btn btn-primary mt-2">Browse Services</a>
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
+    </div>
+    
+    <div class="stat-card bg-white p-4 md:p-6 rounded-xl shadow-sm animate-slide-up" style="animation-delay: 0.2s;">
+        <div class="flex items-center">
+            <div class="p-2 md:p-3 rounded-lg bg-blue-50 text-blue-500 mr-3 md:mr-4">
+                <i class="fas fa-spinner text-sm md:text-base"></i>
             </div>
-
-            <!-- Recent Transactions -->
-            <div class="col-lg-5">
-                <div class="card h-100">
-                    <div class="card-header bg-white">
-                        <h5 class="mb-0">Recent Transactions</h5>
-                    </div>
-                    <div class="card-body">
-                        {% if recent_transactions %}
-                            <ul class="list-group list-group-flush">
-                                {% for transaction in recent_transactions %}
-                                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                        <div>
-                                            <h6 class="mb-1">{{ transaction.description }}</h6>
-                                            <small class="text-muted">{{ transaction.created_at|date:"M d, Y H:i" }}</small>
-                                        </div>
-                                        <span class="
-                                            {% if transaction.transaction_type == 'deposit' %}text-success
-                                            {% elif transaction.transaction_type == 'refund' %}text-info
-                                            {% else %}text-danger{% endif %} fw-bold">
-                                            {% if transaction.transaction_type == 'deposit' or transaction.transaction_type == 'refund' %}+{% else %}-{% endif %}
-                                            ₦{{ transaction.amount|floatformat:2 }}
-                                        </span>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% else %}
-                            <div class="text-center py-4">
-                                <i class="fas fa-exchange-alt fa-3x text-muted mb-3"></i>
-                                <h5>No transactions yet</h5>
-                                <p>Your transaction history will appear here.</p>
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
+            <div>
+                <p class="text-xs md:text-sm text-gray-500">Processing</p>
+                <h3 class="text-lg md:text-2xl font-bold text-gray-800">{{ processing_orders }}</h3>
             </div>
         </div>
+    </div>
+    
+    <div class="stat-card bg-white p-4 md:p-6 rounded-xl shadow-sm animate-slide-up" style="animation-delay: 0.3s;">
+        <div class="flex items-center">
+            <div class="p-2 md:p-3 rounded-lg bg-yellow-50 text-yellow-500 mr-3 md:mr-4">
+                <i class="fas fa-clock text-sm md:text-base"></i>
+            </div>
+            <div>
+                <p class="text-xs md:text-sm text-gray-500">Pending</p>
+                <h3 class="text-lg md:text-2xl font-bold text-gray-800">{{ pending_orders }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
 
-        <!-- Quick Actions -->
-        <div class="row mt-5">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header bg-white">
-                        <h5 class="mb-0">Quick Actions</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-4">
-                                <a href="{% url 'services' %}" class="card h-100 text-decoration-none text-reset">
-                                    <div class="card-body text-center">
-                                        <i class="fas fa-shopping-cart fa-2x text-primary mb-3"></i>
-                                        <h5>Place New Order</h5>
-                                        <p class="text-muted mb-0">Browse our services and place a new order</p>
-                                    </div>
-                                </a>
+<!-- Charts Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+    <div class="bg-white p-4 md:p-6 rounded-xl shadow-sm animate-slide-up">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="font-display font-bold text-gray-800 text-sm md:text-base">Order Status</h3>
+        </div>
+        <div class="h-48 md:h-64">
+            <canvas id="orderStatusChart"></canvas>
+        </div>
+    </div>
+    
+    <div class="bg-white p-4 md:p-6 rounded-xl shadow-sm animate-slide-up" style="animation-delay: 0.1s;">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="font-display font-bold text-gray-800 text-sm md:text-base">Monthly Orders</h3>
+        </div>
+        <div class="h-48 md:h-64">
+            <canvas id="monthlyOrdersChart"></canvas>
+        </div>
+    </div>
+    
+    <div class="bg-white p-4 md:p-6 rounded-xl shadow-sm animate-slide-up" style="animation-delay: 0.2s;">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="font-display font-bold text-gray-800 text-sm md:text-base">Balance History</h3>
+        </div>
+        <div class="h-48 md:h-64">
+            <canvas id="balanceHistoryChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activity Row -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Recent Orders -->
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden animate-slide-up">
+        <div class="p-4 md:p-6 border-b flex justify-between items-center">
+            <h3 class="font-display font-bold text-gray-800 text-sm md:text-base">Recent Orders</h3>
+            <a href="{% url 'order_status' %}" class="text-xs md:text-sm text-primary-500 hover:text-primary-600 font-medium">View All</a>
+        </div>
+        <div class="divide-y">
+            {% if recent_orders %}
+                {% for order in recent_orders %}
+                    <div class="p-3 md:p-4 hover:bg-gray-50 transition-colors duration-200">
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1 pr-2">
+                                <h4 class="font-medium text-gray-800 mb-1 text-sm md:text-base">{{ order.service.name|truncatechars:25 }}</h4>
+                                <div class="flex items-center text-xs md:text-sm text-gray-500">
+                                    <span class="mr-3">#{{ order.id }}</span>
+                                    <span>{{ order.created_at|date:"M d, Y" }}</span>
+                                </div>
                             </div>
-                            <div class="col-md-4">
-                                <a href="{% url 'add_funds' %}" class="card h-100 text-decoration-none text-reset">
-                                    <div class="card-body text-center">
-                                        <i class="fas fa-wallet fa-2x text-primary mb-3"></i>
-                                        <h5>Add Funds</h5>
-                                        <p class="text-muted mb-0">Add funds to your account balance</p>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-md-4">
-                                <a href="{% url 'order_status' %}" class="card h-100 text-decoration-none text-reset">
-                                    <div class="card-body text-center">
-                                        <i class="fas fa-tasks fa-2x text-primary mb-3"></i>
-                                        <h5>Check Order Status</h5>
-                                        <p class="text-muted mb-0">View the status of your orders</p>
-                                    </div>
-                                </a>
+                            <div class="text-right">
+                                {% if order.status == 'pending' %}
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                        <span class="badge-dot bg-yellow-500"></span> Pending
+                                    </span>
+                                {% elif order.status == 'processing' %}
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                        <span class="badge-dot bg-blue-500"></span> Processing
+                                    </span>
+                                {% elif order.status == 'completed' %}
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        <span class="badge-dot bg-green-500"></span> Completed
+                                    </span>
+                                {% elif order.status == 'canceled' %}
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                        <span class="badge-dot bg-gray-500"></span> Canceled
+                                    </span>
+                                {% elif order.status == 'error' %}
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                        <span class="badge-dot bg-red-500"></span> Error
+                                    </span>
+                                {% endif %}
+                                <div class="text-right mt-1 font-medium text-xs md:text-sm">₦{{ order.charge|floatformat:2 }}</div>
                             </div>
                         </div>
                     </div>
+                {% endfor %}
+            {% else %}
+                <div class="p-6 md:p-8 text-center">
+                    <i class="fas fa-shopping-cart text-3xl md:text-4xl text-gray-300 mb-3"></i>
+                    <h4 class="text-base md:text-lg font-medium text-gray-500 mb-1">No orders yet</h4>
+                    <p class="text-gray-400 mb-4 text-sm md:text-base">You haven't placed any orders yet</p>
+                    <a href="{% url 'services' %}" class="inline-block px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors duration-300 text-sm">
+                        Browse Services
+                    </a>
                 </div>
-            </div>
+            {% endif %}
         </div>
     </div>
-</section>
+    
+    <!-- Recent Transactions -->
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden animate-slide-up" style="animation-delay: 0.1s;">
+        <div class="p-4 md:p-6 border-b">
+            <h3 class="font-display font-bold text-gray-800 text-sm md:text-base">Recent Transactions</h3>
+        </div>
+        <div class="divide-y">
+            {% if recent_transactions %}
+                {% for transaction in recent_transactions %}
+                    <div class="p-3 md:p-4 hover:bg-gray-50 transition-colors duration-200">
+                        <div class="flex justify-between">
+                            <div class="flex-1 pr-2">
+                                                                <h4 class="font-medium text-gray-800 mb-1 text-sm md:text-base">{{ transaction.description|truncatechars:25 }}</h4>
+                                <p class="text-xs md:text-sm text-gray-500">{{ transaction.created_at|date:"M d, Y H:i" }}</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="block font-medium text-sm md:text-base {% if transaction.transaction_type == 'deposit' or transaction.transaction_type == 'refund' %}text-green-600{% else %}text-red-600{% endif %}">
+                                    {% if transaction.transaction_type == 'deposit' or transaction.transaction_type == 'refund' %}+{% else %}-{% endif %}₦{{ transaction.amount|floatformat:2 }}
+                                </span>
+                                <span class="text-xs text-gray-500 capitalize">{{ transaction.transaction_type }}</span>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="p-6 md:p-8 text-center">
+                    <i class="fas fa-exchange-alt text-3xl md:text-4xl text-gray-300 mb-3"></i>
+                    <h4 class="text-base md:text-lg font-medium text-gray-500 mb-1">No transactions yet</h4>
+                    <p class="text-gray-400 text-sm md:text-base">Your transaction history will appear here</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="mt-6 md:mt-8 bg-white rounded-xl shadow-sm overflow-hidden animate-slide-up" style="animation-delay: 0.2s;">
+    <div class="p-4 md:p-6 border-b">
+        <h3 class="font-display font-bold text-gray-800 text-sm md:text-base">Quick Actions</h3>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x">
+        <a href="{% url 'services' %}" class="p-4 md:p-6 text-center hover:bg-gray-50 transition-colors duration-200">
+            <div class="w-10 h-10 md:w-12 md:h-12 mx-auto mb-3 md:mb-4 rounded-full bg-primary-50 text-primary-500 flex items-center justify-center">
+                <i class="fas fa-shopping-cart text-lg md:text-xl"></i>
+            </div>
+            <h4 class="font-medium text-gray-800 mb-1 text-sm md:text-base">Place New Order</h4>
+            <p class="text-xs md:text-sm text-gray-500">Browse our services and place a new order</p>
+        </a>
+        
+        <a href="{% url 'add_funds' %}" class="p-4 md:p-6 text-center hover:bg-gray-50 transition-colors duration-200">
+            <div class="w-10 h-10 md:w-12 md:h-12 mx-auto mb-3 md:mb-4 rounded-full bg-primary-50 text-primary-500 flex items-center justify-center">
+                <i class="fas fa-wallet text-lg md:text-xl"></i>
+            </div>
+            <h4 class="font-medium text-gray-800 mb-1 text-sm md:text-base">Add Funds</h4>
+            <p class="text-xs md:text-sm text-gray-500">Add funds to your account balance</p>
+        </a>
+        
+        <a href="{% url 'order_status' %}" class="p-4 md:p-6 text-center hover:bg-gray-50 transition-colors duration-200">
+            <div class="w-10 h-10 md:w-12 md:h-12 mx-auto mb-3 md:mb-4 rounded-full bg-primary-50 text-primary-500 flex items-center justify-center">
+                <i class="fas fa-tasks text-lg md:text-xl"></i>
+            </div>
+            <h4 class="font-medium text-gray-800 mb-1 text-sm md:text-base">Check Order Status</h4>
+            <p class="text-xs md:text-sm text-gray-500">View the status of your orders</p>
+        </a>
+    </div>
+</div>
 {% endblock %}

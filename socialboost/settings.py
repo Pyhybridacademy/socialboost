@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -57,7 +57,9 @@ ROOT_URLCONF = 'socialboost.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),  # Add this line
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -132,7 +134,7 @@ API_KEY = '5a341350ae6fc1e7491a1c594e34e113'
 # Markup percentage for services (e.g., 20% = 1.2)
 SERVICE_MARKUP = 1.2
 
-
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Add this to your existing LOGGING configuration
 LOGGING = {
@@ -182,3 +184,17 @@ PAYSTACK_SECRET_KEY = 'sk_live_d4787bb7715e038282ffeed014924189fcf0e480'
 # Currency settings
 CURRENCY_SYMBOL = '₦'
 CURRENCY_CODE = 'NGN'
+
+
+# # Email settings
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.your-email-provider.com'  # e.g., smtp.gmail.com
+# EMAIL_PORT = 587  # For TLS
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'your-email@example.com'
+# EMAIL_HOST_PASSWORD = 'your-email-password'
+# DEFAULT_FROM_EMAIL = 'your-email@example.com'
+# SERVER_EMAIL = 'your-email@example.com'
+
+# Password reset settings
+PASSWORD_RESET_TIMEOUT = 86400  # 24 hours in seconds
