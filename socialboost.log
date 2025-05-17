@@ -6235,3 +6235,4 @@ INFO 2025-05-17 04:13:48,771 basehttp "POST /password-reset/ HTTP/1.1" 302 0
 INFO 2025-05-17 04:13:49,363 basehttp "GET /password-reset/done/ HTTP/1.1" 200 3638
 INFO 2025-05-17 04:15:07,926 autoreload C:\Users\kpoje\Desktop\pysmart\engage\socialboost\socialboost\settings.py changed, reloading.
 INFO 2025-05-17 04:15:20,653 autoreload Watching for file changes with StatReloader
+INFO 2025-05-17 04:15:38,310 basehttp "GET /password-reset/done/ HTTP/1.1" 200 3638
