@@ -13,6 +13,9 @@ from django.core.paginator import Paginator
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.admin.views.decorators import staff_member_required
 from .models import Order, Transaction, Service, SiteSettings, ProviderPayment
+from django.contrib.auth import logout
+from django.shortcuts import render, redirect
+from django.contrib import messages
 
 from .models import Service, Order, UserBalance, Transaction
 from .api_client import SocialMediaAPI
@@ -776,3 +779,27 @@ def adjust_markup(request):
     }
     
     return render(request, 'admin/adjust_markup.html', context)
+
+# Add these error handler views to your existing views.py file
+
+def bad_request(request, exception=None):
+    return render(request, 'errors/400.html', status=400)
+
+def permission_denied(request, exception=None):
+    return render(request, 'errors/403.html', status=403)
+
+def page_not_found(request, exception=None):
+    return render(request, 'errors/404.html', status=404)
+
+def server_error(request):
+    return render(request, 'errors/500.html', status=500)
+
+def user_logout(request):
+    # Explicitly log the user out
+    logout(request)
+    
+    # Add a success message
+    messages.success(request, "You have been successfully logged out.")
+    
+    # Render the logout template
+    return render(request, 'registration/logged_out.html')

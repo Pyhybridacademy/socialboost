@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}{{ site_settings.site_name }} - Server Error{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-secondary-50 py-20">
+    <div class="text-center max-w-2xl mx-auto px-4 animate-scale-in">
+        <div class="inline-flex items-center justify-center w-32 h-32 rounded-full bg-gradient-to-r from-primary-100 to-secondary-100 mb-8">
+            <i class="fas fa-server text-5xl text-primary-600"></i>
+        </div>
+        <h1 class="text-5xl font-display font-bold text-gray-900 mb-6">500</h1>
+        <h2 class="text-3xl font-display font-semibold text-gray-800 mb-4">Server Error</h2>
+        <p class="text-lg text-gray-600 mb-8">
+            Oops! Something went wrong on our end. We're working to fix it.
+            Please try again later or contact support if the problem persists.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a href="{% url 'index' %}" class="px-6 py-3 rounded-lg font-medium text-white bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 transition-all duration-300 shadow-md hover:shadow-lg">
+                <i class="fas fa-home mr-2"></i> Back to Home
+            </a>
+            <a href="mailto:{{ site_settings.contact_email }}" class="px-6 py-3 rounded-lg font-medium text-primary-600 border border-primary-600 hover:bg-primary-50 transition-colors duration-300">
+                <i class="fas fa-envelope mr-2"></i> Contact Support
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
