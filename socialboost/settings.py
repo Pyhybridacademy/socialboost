@@ -14,7 +14,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'False'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'socialboost-um9n.onrender.com']
 
 
 # Application definition
@@ -194,3 +194,10 @@ LOGGING = {
 SESSION_COOKIE_AGE = 1209600  # 2 weeks in seconds
 SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Set to True if you want sessions to expire when browser closes
+
+
+# Site URL for links in emails
+SITE_URL = 'https://socialboost-um9n.onrender.com'  # Change this in production
+
+# Add this to your settings.py file
+CSRF_TRUSTED_ORIGINS = ['https://socialboost-um9n.onrender.com']
